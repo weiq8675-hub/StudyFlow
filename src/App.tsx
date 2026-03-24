@@ -7,6 +7,7 @@ import 'dayjs/locale/zh-cn';
 
 import { AppLayout } from './components/AppLayout';
 import { TodayView } from './pages/TodayView';
+import { HomeworkListView } from './pages/HomeworkListView';
 
 // Configure dayjs for Chinese
 dayjs.locale('zh-cn');
@@ -29,7 +30,6 @@ const PlaceholderPage: React.FC<{ title: string }> = ({ title }) => (
 );
 
 const CalendarView = () => <PlaceholderPage title="日历" />;
-const HomeworkListView = () => <PlaceholderPage title="作业库" />;
 const StatsView = () => <PlaceholderPage title="统计" />;
 const SettingsView = () => <PlaceholderPage title="设置" />;
 
