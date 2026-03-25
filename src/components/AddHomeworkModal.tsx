@@ -9,6 +9,7 @@ interface AddHomeworkModalProps {
   open: boolean;
   onClose: () => void;
   initialTitle?: string;
+  initialDueDate?: Date;
   editHomework?: {
     id: string;
     title: string;
@@ -23,6 +24,7 @@ export const AddHomeworkModal: React.FC<AddHomeworkModalProps> = ({
   open,
   onClose,
   initialTitle = '',
+  initialDueDate,
   editHomework,
 }) => {
   const [form] = Form.useForm();
@@ -51,11 +53,11 @@ export const AddHomeworkModal: React.FC<AddHomeworkModalProps> = ({
           subjectId: undefined,
           priority: 'medium',
           estimatedMinutes: 30,
-          dueDate: dayjs(),
+          dueDate: initialDueDate ? dayjs(initialDueDate) : dayjs(),
         });
       }
     }
-  }, [open, initialTitle, editHomework, form]);
+  }, [open, initialTitle, initialDueDate, editHomework, form]);
 
   const handleSubmit = async () => {
     try {

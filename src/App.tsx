@@ -8,30 +8,12 @@ import 'dayjs/locale/zh-cn';
 import { AppLayout } from './components/AppLayout';
 import { TodayView } from './pages/TodayView';
 import { HomeworkListView } from './pages/HomeworkListView';
+import { CalendarView } from './pages/CalendarView';
+import { StatsView } from './pages/StatsView';
+import { SettingsView } from './pages/SettingsView';
 
 // Configure dayjs for Chinese
 dayjs.locale('zh-cn');
-
-// Placeholder pages for routes not yet implemented
-const PlaceholderPage: React.FC<{ title: string }> = ({ title }) => (
-  <div
-    style={{
-      height: '100%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexDirection: 'column',
-      gap: 16,
-    }}
-  >
-    <h2>{title}</h2>
-    <p style={{ color: '#999' }}>即将推出...</p>
-  </div>
-);
-
-const CalendarView = () => <PlaceholderPage title="日历" />;
-const StatsView = () => <PlaceholderPage title="统计" />;
-const SettingsView = () => <PlaceholderPage title="设置" />;
 
 const App: React.FC = () => {
   return (
