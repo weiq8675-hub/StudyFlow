@@ -1,28 +1,74 @@
-/* StudyFlow - Global Styles */
+/* StudyFlow - Digital Mentor Design System */
+/* Import Plus Jakarta Sans font */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
 :root {
-  /* Design tokens */
-  --font-display: "Noto Sans SC", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-body: "Noto Sans SC", -apple-system, BlinkMacSystemFont, sans-serif;
+  /* ========================================
+   * Design System: The Digital Mentor
+   * Creative North Star: Soft-Editorial Layout
+   * ======================================== */
 
-  /* Colors */
-  --bg-primary: #ffffff;
-  --bg-secondary: #fafafa;
-  --bg-tertiary: #f5f5f5;
+  /* Typography */
+  --font-display: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
 
-  --text-primary: #1a1a1a;
-  --text-secondary: #666666;
-  --text-tertiary: #999999;
+  /* ========================================
+   * Color Palette
+   * ======================================== */
 
-  --accent-primary: #1677ff;
-  --accent-hover: #4096ff;
-  --accent-active: #0958d9;
+  /* Primary - Growth & Achievement */
+  --color-primary: #136b5c;
+  --color-primary-dim: #0f5a4d;
+  --color-primary-container: #a8f0de;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #002019;
 
-  --success: #52c41a;
-  --warning: #faad14;
-  --error: #ff4d4f;
+  /* Secondary - Supporting & Navigation */
+  --color-secondary: #276775;
+  --color-secondary-container: #bce9f7;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #001f26;
 
-  /* Spacing */
+  /* Tertiary - Gentle Nudges & Reminders */
+  --color-tertiary: #8a502f;
+  --color-tertiary-container: #ffdcc6;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #361100;
+
+  /* Surface & Background - Ultra-soft mint-blue canvas */
+  --color-surface: #eafdff;
+  --color-on-surface: #10383c;
+  --color-on-surface-variant: #406569;
+
+  /* Surface Container Hierarchy - Tonal Layering */
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #eefafa;
+  --color-surface-container: #e4f5f6;
+  --color-surface-container-high: #d8eff0;
+  --color-surface-container-highest: #c2eaee;
+
+  /* Inverse Surface - Dark sidebar anchor */
+  --color-inverse-surface: #011113;
+  --color-inverse-on-surface: #c2f1f3;
+  --color-primary-fixed: #62f4df;
+  --color-primary-fixed-dim: #44d7c3;
+
+  /* Outline - Ghost Border */
+  --color-outline: #70797a;
+  --color-outline-variant: #bfc9ca;
+
+  /* Semantic Colors */
+  --color-success: #2e7d32;
+  --color-success-container: #c8e6c9;
+  --color-warning: #ed6c02;
+  --color-warning-container: #ffe0b2;
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+
+  /* ========================================
+   * Spacing Scale
+   * ======================================== */
+  --space-0: 0;
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -30,12 +76,68 @@
   --space-5: 20px;
   --space-6: 24px;
   --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
 
-  /* Border radius */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  /* ========================================
+   * Border Radius - Soft & Friendly
+   * ======================================== */
+  --radius-none: 0;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* ========================================
+   * Elevation - Ambient Shadows (Tinted)
+   * ======================================== */
+  --shadow-sm: 0 2px 8px rgba(16, 56, 60, 0.04);
+  --shadow-md: 0 4px 16px rgba(16, 56, 60, 0.05);
+  --shadow-lg: 0 8px 32px rgba(16, 56, 60, 0.06);
+  --shadow-xl: 0 16px 48px rgba(16, 56, 60, 0.08);
+
+  /* Glassmorphism */
+  --glass-blur: 16px;
+  --glass-bg: rgba(254, 253, 255, 0.85);
+
+  /* ========================================
+   * Typography Scale
+   * ======================================== */
+  --text-xs: 0.75rem;    /* 12px */
+  --text-sm: 0.875rem;   /* 14px */
+  --text-base: 1rem;     /* 16px */
+  --text-lg: 1.125rem;   /* 18px */
+  --text-xl: 1.25rem;    /* 20px */
+  --text-2xl: 1.5rem;    /* 24px */
+  --text-3xl: 2rem;      /* 32px */
+  --text-display: 2.75rem; /* 44px */
+
+  /* Line Heights */
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+
+  /* ========================================
+   * Animation & Transitions
+   * ======================================== */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 350ms ease;
+
+  /* Legacy compatibility (will be removed) */
+  --bg-primary: var(--color-surface-container-lowest);
+  --bg-secondary: var(--color-surface-container);
+  --bg-tertiary: var(--color-surface-container-high);
+  --text-primary: var(--color-on-surface);
+  --text-secondary: var(--color-on-surface-variant);
+  --accent-primary: var(--color-primary);
+  --accent-hover: var(--color-primary-dim);
 }
+
+/* ========================================
+ * Base Styles
+ * ======================================== */
 
 * {
   margin: 0;
@@ -52,17 +154,21 @@ body,
 
 body {
   font-family: var(--font-body);
-  font-size: 14px;
-  color: var(--text-primary);
-  background-color: var(--bg-primary);
+  font-size: var(--text-sm);
+  color: var(--color-on-surface);
+  background-color: var(--color-surface);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: var(--leading-normal);
 }
 
-/* Scrollbar styling */
+/* ========================================
+ * Scrollbar Styling - Soft & Subtle
+ * ======================================== */
+
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -70,21 +176,28 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d9d9d9;
-  border-radius: 3px;
+  background: var(--color-outline-variant);
+  border-radius: var(--radius-full);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #bfbfbf;
+  background: var(--color-outline);
 }
 
-/* Focus ring for accessibility */
+/* ========================================
+ * Focus States - Ghost Border (40% opacity)
+ * ======================================== */
+
 :focus-visible {
-  outline: 2px solid var(--accent-primary);
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
+  outline-opacity: 0.4;
 }
 
-/* Reduced motion preference */
+/* ========================================
+ * Reduced Motion Preference
+ * ======================================== */
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
@@ -93,34 +206,282 @@ body {
   }
 }
 
-/* Ant Design overrides */
+/* ========================================
+ * Ant Design Overrides - No-Line Rule
+ * ======================================== */
+
 .ant-layout {
   min-height: 100%;
+  background: var(--color-surface);
 }
 
 .ant-layout-sider {
   box-shadow: none !important;
+  border-right: none !important;
+}
+
+/* Sidebar - Dark Mode Exception */
+.ant-layout-sider-dark {
+  background: var(--color-inverse-surface) !important;
+}
+
+.ant-menu {
+  border: none !important;
 }
 
 .ant-menu-item {
-  margin: 4px 8px !important;
-  border-radius: var(--radius-md) !important;
+  margin: 4px 12px !important;
+  border-radius: var(--radius-lg) !important;
+  font-weight: 500;
+  transition: all var(--transition-normal);
 }
 
+.ant-menu-item:hover {
+  background: var(--color-surface-container-high) !important;
+}
+
+.ant-menu-item-selected {
+  background: var(--color-primary-container) !important;
+  color: var(--color-primary) !important;
+}
+
+/* Dark sidebar menu */
+.ant-menu-dark .ant-menu-item {
+  color: var(--color-inverse-on-surface) !important;
+}
+
+.ant-menu-dark .ant-menu-item:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.ant-menu-dark .ant-menu-item-selected {
+  background: var(--color-primary) !important;
+  color: var(--color-on-primary) !important;
+}
+
+/* List Items - No borders, use tonal separation */
 .ant-list-item {
-  padding: var(--space-4) 0 !important;
+  padding: var(--space-4) !important;
+  border-bottom: none !important;
+  border-radius: var(--radius-lg);
+  transition: background var(--transition-fast);
+}
+
+.ant-list-item:hover {
+  background: var(--color-surface-container);
 }
 
 .ant-list-item-meta-title {
-  font-size: 14px !important;
+  font-size: var(--text-sm) !important;
+  font-weight: 500;
+  color: var(--color-on-surface);
 }
 
+.ant-list-item-meta-description {
+  color: var(--color-on-surface-variant) !important;
+}
+
+/* Tags - Soft pills */
 .ant-tag {
   font-size: 11px !important;
-  padding: 2px 8px !important;
+  padding: 2px 10px !important;
+  border: none !important;
+  border-radius: var(--radius-full) !important;
+  font-weight: 500;
 }
 
-/* Animation utilities */
+/* Cards - xl radius, no dividers */
+.ant-card {
+  border: none !important;
+  border-radius: var(--radius-xl) !important;
+  box-shadow: var(--shadow-md) !important;
+  background: var(--color-surface-container-lowest) !important;
+}
+
+.ant-card-head {
+  border-bottom: none !important;
+  padding: var(--space-4) var(--space-6) !important;
+}
+
+.ant-card-body {
+  padding: var(--space-6) !important;
+}
+
+/* Buttons - Rounded full with gradient for primary */
+.ant-btn {
+  border-radius: var(--radius-full) !important;
+  font-weight: 500;
+  border: none !important;
+  transition: all var(--transition-normal);
+}
+
+.ant-btn-primary {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dim) 100%) !important;
+  box-shadow: var(--shadow-sm);
+}
+
+.ant-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Input Fields - Surface-container-lowest with ghost focus */
+.ant-input {
+  border: none !important;
+  border-radius: var(--radius-md) !important;
+  background: var(--color-surface-container-lowest) !important;
+  padding: var(--space-3) var(--space-4) !important;
+  transition: all var(--transition-fast);
+}
+
+.ant-input:focus,
+.ant-input-focused {
+  box-shadow: 0 0 0 2px rgba(19, 107, 92, 0.4) !important;
+}
+
+.ant-input-affix-wrapper {
+  border: none !important;
+  border-radius: var(--radius-md) !important;
+  background: var(--color-surface-container-lowest) !important;
+}
+
+.ant-input-affix-wrapper:focus,
+.ant-input-affix-wrapper-focused {
+  box-shadow: 0 0 0 2px rgba(19, 107, 92, 0.4) !important;
+}
+
+/* Select */
+.ant-select-selector {
+  border: none !important;
+  border-radius: var(--radius-md) !important;
+  background: var(--color-surface-container-lowest) !important;
+}
+
+.ant-select-focused .ant-select-selector {
+  box-shadow: 0 0 0 2px rgba(19, 107, 92, 0.4) !important;
+}
+
+/* Modal - Glassmorphism */
+.ant-modal-content {
+  border: none !important;
+  border-radius: var(--radius-xl) !important;
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(var(--glass-blur)) !important;
+  box-shadow: var(--shadow-xl) !important;
+  padding: var(--space-6) !important;
+}
+
+.ant-modal-header {
+  border-bottom: none !important;
+  padding-bottom: var(--space-4) !important;
+  background: transparent !important;
+}
+
+.ant-modal-footer {
+  border-top: none !important;
+  padding-top: var(--space-4) !important;
+  background: transparent !important;
+}
+
+/* Progress - Rounded caps */
+.ant-progress-bg {
+  border-radius: var(--radius-full) !important;
+}
+
+.ant-progress-inner {
+  border-radius: var(--radius-full) !important;
+  background: var(--color-surface-container-high) !important;
+}
+
+/* Empty State */
+.ant-empty-description {
+  color: var(--color-on-surface-variant) !important;
+}
+
+/* Typography */
+.ant-typography {
+  color: var(--color-on-surface);
+}
+
+.ant-typography.ant-typography-secondary {
+  color: var(--color-on-surface-variant) !important;
+}
+
+/* Segmented - Pill style */
+.ant-segmented {
+  border-radius: var(--radius-full) !important;
+  background: var(--color-surface-container) !important;
+  padding: 2px !important;
+}
+
+.ant-segmented-item {
+  border-radius: var(--radius-full) !important;
+}
+
+.ant-segmented-item-selected {
+  background: var(--color-surface-container-lowest) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+/* Statistic */
+.ant-statistic-content-value {
+  color: var(--color-on-surface) !important;
+  font-weight: 600 !important;
+}
+
+/* Badge */
+.ant-badge-count {
+  background: var(--color-primary) !important;
+  border-radius: var(--radius-full) !important;
+}
+
+/* ========================================
+ * Custom Utility Classes
+ * ======================================== */
+
+/* Surface containers for tonal layering */
+.surface-container-lowest {
+  background: var(--color-surface-container-lowest);
+  border-radius: var(--radius-xl);
+}
+
+.surface-container-low {
+  background: var(--color-surface-container-low);
+  border-radius: var(--radius-lg);
+}
+
+.surface-container {
+  background: var(--color-surface-container);
+  border-radius: var(--radius-lg);
+}
+
+.surface-container-high {
+  background: var(--color-surface-container-high);
+  border-radius: var(--radius-lg);
+}
+
+.surface-container-highest {
+  background: var(--color-surface-container-highest);
+  border-radius: var(--radius-md);
+}
+
+/* Glass effect for floating elements */
+.glass-effect {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border-radius: var(--radius-xl);
+}
+
+/* Ghost border for accessibility fallback */
+.ghost-border {
+  box-shadow: 0 0 0 1px rgba(191, 201, 202, 0.15);
+}
+
+/* ========================================
+ * Animation Utilities
+ * ======================================== */
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -152,12 +513,27 @@ body {
   }
 }
 
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .fade-in {
-  animation: fadeIn 0.2s ease-out;
+  animation: fadeIn 0.25s ease-out;
 }
 
 .slide-in {
   animation: slideIn 0.3s ease-out;
+}
+
+.scale-in {
+  animation: scaleIn 0.2s ease-out;
 }
 
 /* Confetti animation container */
@@ -171,17 +547,12 @@ body {
   z-index: 9999;
 }
 
-/* Task list item hover effect */
-.task-item:hover {
-  background-color: var(--bg-tertiary);
-}
-
 /* Points animation */
 .points-popup {
   position: fixed;
   font-size: 24px;
   font-weight: 600;
-  color: var(--success);
+  color: var(--color-success);
   pointer-events: none;
   animation: pointsFloat 1s ease-out forwards;
 }
@@ -196,3 +567,17 @@ body {
     transform: translateY(-40px);
   }
 }
+
+/* ========================================
+ * Subject Colors (Pastel Organization)
+ * ======================================== */
+
+.subject-语文 { --subject-color: #fff7e6; --subject-text: #ad6800; }
+.subject-数学 { --subject-color: #e6f4ff; --subject-text: #0050b3; }
+.subject-英语 { --subject-color: #f6ffed; --subject-text: #389e0d; }
+.subject-物理 { --subject-color: #f9f0ff; --subject-text: #7b00cc; }
+.subject-化学 { --subject-color: #fff1f0; --subject-text: #a8071a; }
+.subject-生物 { --subject-color: #e6fffb; --subject-text: #006d75; }
+.subject-历史 { --subject-color: #fffbe6; --subject-text: #ad8b00; }
+.subject-地理 { --subject-color: #fcffe6; --subject-text: #5b8c00; }
+.subject-政治 { --subject-color: #f0f5ff; --subject-text: #1d39c4; }

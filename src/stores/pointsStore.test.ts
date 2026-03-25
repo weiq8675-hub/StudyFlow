@@ -41,23 +41,11 @@ describe('pointsStore', () => {
         updatedAt: new Date(),
       };
 
-      const mediumPriority: Homework = {
-        ...highPriority,
-        id: '2',
-        priority: 'medium' as Priority,
-      };
-
-      const lowPriority: Homework = {
-        ...highPriority,
-        id: '3',
-        priority: 'low' as Priority,
-      };
-
       // High: 30 * 3 = 90
       // Medium: 30 * 2 = 60
       // Low: 30 * 1 = 30
       // These are internal functions, tested via awardPoints behavior
-      expect(true).toBe(true); // Placeholder - awardPoints integration test below
+      expect(highPriority.priority).toBe('high');
     });
   });
 

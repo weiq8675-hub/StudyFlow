@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Input, Button, List, Tag, Space, Modal, message, Empty } from 'antd';
-import { PlusOutlined, ThunderboltOutlined, ClockCircleOutlined, CheckOutlined } from '@ant-design/icons';
+import { Typography, Input, Button, Tag, Space, Modal, message } from 'antd';
+import { PlusOutlined, ThunderboltOutlined, ClockCircleOutlined, CheckOutlined, TrophyOutlined, FireOutlined } from '@ant-design/icons';
 import { useHomeworkStore } from '../stores/homeworkStore';
 import { useSubjectStore } from '../stores/subjectStore';
 import { usePointsStore } from '../stores/pointsStore';
@@ -105,216 +105,445 @@ export const TodayView: React.FC = () => {
 
   if (loading) {
     return (
-      <div style={{ padding: 24, textAlign: 'center' }}>
+      <div style={{
+        padding: 48,
+        textAlign: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 16,
+      }}>
+        <div
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: '50%',
+            background: 'var(--color-primary-container)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <div
+            style={{
+              width: 20,
+              height: 20,
+              borderRadius: '50%',
+              border: '2px solid var(--color-primary)',
+              borderTopColor: 'transparent',
+              animation: 'spin 1s linear infinite',
+            }}
+          />
+        </div>
         <Text type="secondary">加载中...</Text>
       </div>
     );
   }
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      {/* Header */}
-      <div style={{ padding: '24px 24px 16px', borderBottom: '1px solid #f0f0f0' }}>
-        <Title level={4} style={{ margin: 0, marginBottom: 4 }}>
-          今天
-        </Title>
-        <Text type="secondary">{formatDate()}</Text>
-        {todayHomework.length > 0 && (
-          <Text type="secondary" style={{ marginLeft: 8 }}>
-            · {pendingHomework.length}项待完成
-          </Text>
-        )}
-      </div>
-
-      {/* Stats Bar */}
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: 'var(--color-surface)' }}>
+      {/* Header - Editorial Style */}
       <div
         style={{
-          display: 'flex',
-          gap: 24,
-          padding: '16px 24px',
-          borderBottom: '1px solid #f0f0f0',
-          background: '#fafafa',
+          padding: '32px 32px 24px',
+          background: 'var(--color-surface-container-lowest)',
+          borderRadius: '0 0 24px 24px',
+          boxShadow: 'var(--shadow-sm)',
         }}
       >
-        <div>
-          <Text type="secondary" style={{ fontSize: 12 }}>
-            预估时间
+        <Title
+          level={2}
+          style={{
+            margin: 0,
+            marginBottom: 8,
+            fontWeight: 700,
+            color: 'var(--color-on-surface)',
+            letterSpacing: '-0.02em',
+          }}
+        >
+          今天
+        </Title>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Text
+            type="secondary"
+            style={{ fontSize: 14, color: 'var(--color-on-surface-variant)' }}
+          >
+            {formatDate()}
           </Text>
-          <div style={{ fontWeight: 600, fontSize: 16 }}>
+          {todayHomework.length > 0 && (
+            <Tag
+              style={{
+                background: 'var(--color-primary-container)',
+                color: 'var(--color-primary)',
+                border: 'none',
+                borderRadius: 9999,
+                padding: '2px 12px',
+                fontWeight: 500,
+              }}
+            >
+              {pendingHomework.length}项待完成
+            </Tag>
+          )}
+        </div>
+      </div>
+
+      {/* Stats Cards - Asymmetrical Layout */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: 16,
+          padding: '24px 32px',
+        }}
+      >
+        {/* Estimated Time Card */}
+        <div
+          style={{
+            padding: 20,
+            borderRadius: 20,
+            background: 'var(--color-surface-container-lowest)',
+            boxShadow: 'var(--shadow-sm)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+            <ClockCircleOutlined style={{ color: 'var(--color-secondary)', fontSize: 16 }} />
+            <Text
+              type="secondary"
+              style={{ fontSize: 12, color: 'var(--color-on-surface-variant)' }}
+            >
+              预估时间
+            </Text>
+          </div>
+          <div
+            style={{
+              fontWeight: 600,
+              fontSize: 24,
+              color: 'var(--color-on-surface)',
+              letterSpacing: '-0.02em',
+            }}
+          >
             {formatTime(totalEstimated)}
           </div>
         </div>
-        <div>
-          <Text type="secondary" style={{ fontSize: 12 }}>
-            已完成
-          </Text>
-          <div style={{ fontWeight: 600, fontSize: 16 }}>
+
+        {/* Completed Card */}
+        <div
+          style={{
+            padding: 20,
+            borderRadius: 20,
+            background: 'var(--color-surface-container-lowest)',
+            boxShadow: 'var(--shadow-sm)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+            <CheckOutlined style={{ color: 'var(--color-success)', fontSize: 16 }} />
+            <Text
+              type="secondary"
+              style={{ fontSize: 12, color: 'var(--color-on-surface-variant)' }}
+            >
+              已完成
+            </Text>
+          </div>
+          <div
+            style={{
+              fontWeight: 600,
+              fontSize: 24,
+              color: 'var(--color-on-surface)',
+              letterSpacing: '-0.02em',
+            }}
+          >
             {formatTime(totalActual)}
           </div>
         </div>
-        <div>
-          <Text type="secondary" style={{ fontSize: 12 }}>
-            完成率
-          </Text>
-          <div style={{ fontWeight: 600, fontSize: 16 }}>{completionRate}%</div>
+
+        {/* Completion Rate Card */}
+        <div
+          style={{
+            padding: 20,
+            borderRadius: 20,
+            background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dim) 100%)',
+            boxShadow: 'var(--shadow-md)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+            <TrophyOutlined style={{ color: 'rgba(255,255,255,0.8)', fontSize: 16 }} />
+            <Text style={{ fontSize: 12, color: 'rgba(255,255,255,0.8)' }}>
+              完成率
+            </Text>
+          </div>
+          <div
+            style={{
+              fontWeight: 600,
+              fontSize: 24,
+              color: 'var(--color-on-primary)',
+              letterSpacing: '-0.02em',
+            }}
+          >
+            {completionRate}%
+          </div>
         </div>
       </div>
 
-      {/* Quick Add */}
-      <div style={{ padding: '16px 24px', borderBottom: '1px solid #f0f0f0' }}>
-        <Space.Compact style={{ width: '100%' }}>
+      {/* Quick Add - Floating Card */}
+      <div style={{ padding: '0 32px 16px' }}>
+        <div
+          style={{
+            display: 'flex',
+            gap: 12,
+            padding: 12,
+            borderRadius: 20,
+            background: 'var(--color-surface-container-lowest)',
+            boxShadow: 'var(--shadow-sm)',
+          }}
+        >
           <Input
             placeholder="快速添加作业..."
             value={quickAddTitle}
             onChange={(e) => setQuickAddTitle(e.target.value)}
             onPressEnter={handleQuickAdd}
-            prefix={<PlusOutlined style={{ color: '#999' }} />}
+            prefix={<PlusOutlined style={{ color: 'var(--color-on-surface-variant)' }} />}
+            style={{ flex: 1 }}
           />
-          <Button type="primary" onClick={handleQuickAdd}>
+          <Button
+            type="primary"
+            onClick={handleQuickAdd}
+            style={{
+              paddingInline: 24,
+              fontWeight: 500,
+            }}
+          >
             添加
           </Button>
-        </Space.Compact>
+        </div>
       </div>
 
-      {/* Task List */}
-      <div style={{ flex: 1, overflow: 'auto', padding: '0 24px' }}>
+      {/* Task List - No borders, tonal separation */}
+      <div style={{ flex: 1, overflow: 'auto', padding: '0 32px' }}>
         {pendingHomework.length === 0 && completedHomework.length === 0 ? (
-          <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description={
-              <span>
-                今天没有作业! 🎉
-                <br />
-                <Text type="secondary" style={{ fontSize: 12 }}>
-                  点击上方输入框添加
-                </Text>
-              </span>
-            }
-            style={{ marginTop: 80 }}
-          />
+          <div
+            style={{
+              textAlign: 'center',
+              padding: '80px 32px',
+              borderRadius: 24,
+              background: 'var(--color-surface-container)',
+              marginTop: 16,
+            }}
+          >
+            <div
+              style={{
+                fontSize: 48,
+                marginBottom: 16,
+              }}
+            >
+              🎉
+            </div>
+            <Text
+              style={{
+                display: 'block',
+                fontSize: 16,
+                fontWeight: 500,
+                color: 'var(--color-on-surface)',
+                marginBottom: 8,
+              }}
+            >
+              今天没有作业!
+            </Text>
+            <Text
+              type="secondary"
+              style={{ fontSize: 13, color: 'var(--color-on-surface-variant)' }}
+            >
+              点击上方输入框添加
+            </Text>
+          </div>
         ) : (
           <>
             {/* Pending Tasks */}
             {pendingHomework.length > 0 && (
-              <List
-                dataSource={pendingHomework}
-                renderItem={(item) => (
-                  <List.Item
-                    actions={[
-                      <Button
-                        key="start"
-                        type="primary"
-                        size="small"
-                        onClick={() => handleStartTask(item)}
-                      >
-                        开始
-                      </Button>,
-                      <Button
-                        key="delete"
-                        type="text"
-                        danger
-                        size="small"
-                        onClick={() => handleDelete(item)}
-                      >
-                        删除
-                      </Button>,
-                    ]}
-                    style={{ borderBottom: '1px solid #f5f5f5' }}
+              <div style={{ marginBottom: 24 }}>
+                {pendingHomework.map((item, index) => (
+                  <div
+                    key={item.id}
+                    style={{
+                      padding: 16,
+                      marginBottom: index < pendingHomework.length - 1 ? 8 : 0,
+                      borderRadius: 16,
+                      background: 'var(--color-surface-container-lowest)',
+                      boxShadow: 'var(--shadow-sm)',
+                      transition: 'all 0.2s ease',
+                    }}
+                    className="task-item"
                   >
-                    <List.Item.Meta
-                      avatar={
-                        <div
-                          style={{
-                            width: 6,
-                            height: 6,
-                            borderRadius: '50%',
-                            background:
-                              item.priority === 'high' ? '#ff4d4f' : '#d9d9d9',
-                            marginTop: 8,
-                          }}
-                        />
-                      }
-                      title={
-                        <Space>
-                          <Text>{item.title}</Text>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                      {/* Priority Indicator */}
+                      <div
+                        style={{
+                          width: 8,
+                          height: 8,
+                          borderRadius: '50%',
+                          background: item.priority === 'high'
+                            ? 'var(--color-error)'
+                            : 'var(--color-outline-variant)',
+                          marginTop: 6,
+                          flexShrink: 0,
+                        }}
+                      />
+
+                      {/* Content */}
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                          <Text
+                            style={{
+                              fontWeight: 500,
+                              color: 'var(--color-on-surface)',
+                            }}
+                          >
+                            {item.title}
+                          </Text>
                           <Tag
                             style={{
                               background: getSubjectColor(item.subjectId),
                               border: 'none',
+                              borderRadius: 9999,
                               fontSize: 11,
+                              padding: '2px 10px',
+                              fontWeight: 500,
                             }}
                           >
                             {getSubjectName(item.subjectId)}
                           </Tag>
                           {item.priority === 'high' && (
-                            <ThunderboltOutlined style={{ color: '#ff4d4f' }} />
+                            <ThunderboltOutlined style={{ color: 'var(--color-error)', fontSize: 14 }} />
                           )}
-                        </Space>
-                      }
-                      description={
+                        </div>
                         <Space separator={<Text type="secondary">·</Text>}>
-                          <span>
-                            <ClockCircleOutlined /> {item.estimatedMinutes}分钟
+                          <span style={{ color: 'var(--color-on-surface-variant)', fontSize: 13 }}>
+                            <ClockCircleOutlined style={{ marginRight: 4 }} />
+                            {item.estimatedMinutes}分钟
                           </span>
                         </Space>
-                      }
-                    />
-                  </List.Item>
-                )}
-              />
+                      </div>
+
+                      {/* Actions */}
+                      <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
+                        <Button
+                          type="primary"
+                          size="small"
+                          onClick={() => handleStartTask(item)}
+                          style={{
+                            borderRadius: 9999,
+                            fontWeight: 500,
+                          }}
+                        >
+                          开始
+                        </Button>
+                        <Button
+                          type="text"
+                          size="small"
+                          danger
+                          onClick={() => handleDelete(item)}
+                          style={{ borderRadius: 9999 }}
+                        >
+                          删除
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
 
             {/* Completed Tasks */}
             {completedHomework.length > 0 && (
               <>
                 <Text
-                  type="secondary"
-                  style={{ display: 'block', marginTop: 24, marginBottom: 8 }}
+                  style={{
+                    display: 'block',
+                    marginBottom: 12,
+                    fontSize: 13,
+                    fontWeight: 500,
+                    color: 'var(--color-on-surface-variant)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                  }}
                 >
                   已完成
                 </Text>
-                <List
-                  dataSource={completedHomework}
-                  renderItem={(item) => (
-                    <List.Item
-                      style={{
-                        borderBottom: '1px solid #f5f5f5',
-                        opacity: 0.6,
-                      }}
-                    >
-                      <List.Item.Meta
-                        avatar={<CheckOutlined style={{ color: '#52c41a' }} />}
-                        title={
-                          <Text delete={true}>{item.title}</Text>
-                        }
-                        description={
-                          <Space separator={<Text type="secondary">·</Text>}>
-                            <span>预估 {item.estimatedMinutes}分钟</span>
-                            <span>实际 {item.actualMinutes}分钟</span>
-                          </Space>
-                        }
+                {completedHomework.map((item, index) => (
+                  <div
+                    key={item.id}
+                    style={{
+                      padding: 16,
+                      marginBottom: index < completedHomework.length - 1 ? 8 : 0,
+                      borderRadius: 16,
+                      background: 'var(--color-surface-container)',
+                      opacity: 0.7,
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                      <CheckOutlined
+                        style={{
+                          color: 'var(--color-success)',
+                          marginTop: 4,
+                        }}
                       />
-                    </List.Item>
-                  )}
-                />
+                      <div style={{ flex: 1 }}>
+                        <Text
+                          delete
+                          style={{
+                            color: 'var(--color-on-surface-variant)',
+                          }}
+                        >
+                          {item.title}
+                        </Text>
+                        <div style={{ marginTop: 4 }}>
+                          <Space
+                            separator={<Text type="secondary">·</Text>}
+                            style={{ fontSize: 12 }}
+                          >
+                            <span style={{ color: 'var(--color-on-surface-variant)' }}>
+                              预估 {item.estimatedMinutes}分钟
+                            </span>
+                            <span style={{ color: 'var(--color-on-surface-variant)' }}>
+                              实际 {item.actualMinutes}分钟
+                            </span>
+                          </Space>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </>
             )}
           </>
         )}
       </div>
 
-      {/* Gamification Footer */}
+      {/* Gamification Footer - Glass Effect */}
       <div
         style={{
-          padding: '12px 24px',
-          borderTop: '1px solid #f0f0f0',
-          background: '#fafafa',
+          padding: '16px 32px',
+          background: 'var(--glass-bg)',
+          backdropFilter: 'blur(16px)',
+          borderTop: 'none',
           textAlign: 'center',
+          borderRadius: '24px 24px 0 0',
         }}
       >
-        <Text type="secondary">
-          🔥 {streak}天连续 · {totalPoints}积分
-        </Text>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 24 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <FireOutlined style={{ color: '#ff9f43', fontSize: 16 }} />
+            <Text style={{ color: 'var(--color-on-surface)', fontWeight: 500 }}>
+              {streak}天连续
+            </Text>
+          </div>
+          <div style={{ width: 1, height: 16, background: 'var(--color-outline-variant)' }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <TrophyOutlined style={{ color: 'var(--color-primary)', fontSize: 16 }} />
+            <Text style={{ color: 'var(--color-on-surface)', fontWeight: 500 }}>
+              {totalPoints}积分
+            </Text>
+          </div>
+        </div>
       </div>
 
       {/* Modals */}
@@ -336,6 +565,14 @@ export const TodayView: React.FC = () => {
         }}
         onComplete={handleComplete}
       />
+
+      {/* Add spin animation */}
+      <style>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 };

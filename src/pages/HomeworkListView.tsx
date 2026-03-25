@@ -1,13 +1,11 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import {
   Typography,
-  List,
   Tag,
   Space,
   Select,
   Button,
   Modal,
-  Empty,
   DatePicker,
   Popover,
 } from 'antd';
@@ -18,6 +16,8 @@ import {
   CalendarOutlined,
   DeleteOutlined,
   EditOutlined,
+  PlusOutlined,
+  FilterOutlined,
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { useHomeworkStore } from '../stores/homeworkStore';
@@ -199,227 +199,339 @@ export const HomeworkListView: React.FC = () => {
 
   if (loading) {
     return (
-      <div style={{ padding: 24, textAlign: 'center' }}>
+      <div style={{
+        padding: 48,
+        textAlign: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 16,
+      }}>
+        <div
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: '50%',
+            background: 'var(--color-primary-container)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <div
+            style={{
+              width: 20,
+              height: 20,
+              borderRadius: '50%',
+              border: '2px solid var(--color-primary)',
+              borderTopColor: 'transparent',
+              animation: 'spin 1s linear infinite',
+            }}
+          />
+        </div>
         <Text type="secondary">加载中...</Text>
       </div>
     );
   }
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      {/* Header */}
-      <div style={{ padding: '24px 24px 16px', borderBottom: '1px solid #f0f0f0' }}>
-        <Title level={4} style={{ margin: 0 }}>
-          作业库
-        </Title>
-        <Text type="secondary">共 {filteredHomework.length} 项作业</Text>
-      </div>
-
-      {/* Filters */}
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: 'var(--color-surface)' }}>
+      {/* Header - Editorial Style */}
       <div
         style={{
-          padding: '12px 24px',
-          borderBottom: '1px solid #f0f0f0',
-          background: '#fafafa',
-          display: 'flex',
-          gap: 12,
-          flexWrap: 'wrap',
-          alignItems: 'center',
+          padding: '32px 32px 24px',
+          background: 'var(--color-surface-container-lowest)',
+          borderRadius: '0 0 24px 24px',
+          boxShadow: 'var(--shadow-sm)',
         }}
       >
-        <Select
-          value={statusFilter}
-          onChange={setStatusFilter}
-          style={{ width: 120 }}
-          options={[
-            { value: 'all', label: '全部状态' },
-            { value: 'pending', label: '待完成' },
-            { value: 'completed', label: '已完成' },
-            { value: 'overdue', label: '已过期' },
-          ]}
-        />
-
-        <Select
-          value={subjectFilter}
-          onChange={setSubjectFilter}
-          style={{ width: 120 }}
-          options={[
-            { value: 'all', label: '全部科目' },
-            ...subjects.map((s) => ({ value: s.id, label: s.name })),
-          ]}
-        />
-
-        <Select
-          value={sortBy}
-          onChange={setSortBy}
-          style={{ width: 120 }}
-          options={[
-            { value: 'dueDate', label: '按截止日期' },
-            { value: 'priority', label: '按优先级' },
-            { value: 'subject', label: '按科目' },
-            { value: 'createdAt', label: '按创建时间' },
-          ]}
-        />
-
-        <Popover
-          content={
-            <RangePicker
-              value={dateRange}
-              onChange={(dates) => setDateRange(dates)}
-              presets={[
-                {
-                  label: '本周',
-                  value: [dayjs().startOf('week'), dayjs().endOf('week')],
-                },
-                {
-                  label: '本月',
-                  value: [dayjs().startOf('month'), dayjs().endOf('month')],
-                },
-                {
-                  label: '最近7天',
-                  value: [dayjs().subtract(7, 'day'), dayjs()],
-                },
-                {
-                  label: '最近30天',
-                  value: [dayjs().subtract(30, 'day'), dayjs()],
-                },
-              ]}
-            />
-          }
-          title="选择日期范围"
-          trigger="click"
-        >
-          <Button icon={<CalendarOutlined />}>
-            {dateRange && dateRange[0] && dateRange[1]
-              ? `${dateRange[0].format('M/D')} - ${dateRange[1].format('M/D')}`
-              : '日期范围'}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <Title
+              level={2}
+              style={{
+                margin: 0,
+                marginBottom: 8,
+                fontWeight: 700,
+                color: 'var(--color-on-surface)',
+                letterSpacing: '-0.02em',
+              }}
+            >
+              作业库
+            </Title>
+            <Text style={{ color: 'var(--color-on-surface-variant)' }}>
+              共 {filteredHomework.length} 项作业
+            </Text>
+          </div>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => setAddModalOpen(true)}
+            style={{ borderRadius: 9999, fontWeight: 500 }}
+          >
+            添加作业
           </Button>
-        </Popover>
-
-        {hasActiveFilters && (
-          <Button onClick={clearFilters}>清除筛选</Button>
-        )}
-
-        <Button type="primary" onClick={() => setAddModalOpen(true)} style={{ marginLeft: 'auto' }}>
-          添加作业
-        </Button>
+        </div>
       </div>
 
-      {/* List */}
-      <div style={{ flex: 1, overflow: 'auto', padding: '0 24px' }}>
-        {filteredHomework.length === 0 ? (
-          <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description={
-              <span>
-                {hasActiveFilters ? '没有符合条件的作业' : '暂无作业'}
-                <br />
-                <Text type="secondary" style={{ fontSize: 12 }}>
-                  {hasActiveFilters ? '尝试调整筛选条件' : '点击"添加作业"开始'}
-                </Text>
-              </span>
-            }
-            style={{ marginTop: 80 }}
+      {/* Filters - Floating Card */}
+      <div style={{ padding: '16px 32px 0' }}>
+        <div
+          style={{
+            display: 'flex',
+            gap: 12,
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            padding: 16,
+            borderRadius: 20,
+            background: 'var(--color-surface-container-lowest)',
+            boxShadow: 'var(--shadow-sm)',
+          }}
+        >
+          <FilterOutlined style={{ color: 'var(--color-on-surface-variant)', marginRight: 4 }} />
+
+          <Select
+            value={statusFilter}
+            onChange={setStatusFilter}
+            style={{ width: 130 }}
+            options={[
+              { value: 'all', label: '全部状态' },
+              { value: 'pending', label: '待完成' },
+              { value: 'completed', label: '已完成' },
+              { value: 'overdue', label: '已过期' },
+            ]}
           />
+
+          <Select
+            value={subjectFilter}
+            onChange={setSubjectFilter}
+            style={{ width: 130 }}
+            options={[
+              { value: 'all', label: '全部科目' },
+              ...subjects.map((s) => ({ value: s.id, label: s.name })),
+            ]}
+          />
+
+          <Select
+            value={sortBy}
+            onChange={setSortBy}
+            style={{ width: 130 }}
+            options={[
+              { value: 'dueDate', label: '按截止日期' },
+              { value: 'priority', label: '按优先级' },
+              { value: 'subject', label: '按科目' },
+              { value: 'createdAt', label: '按创建时间' },
+            ]}
+          />
+
+          <Popover
+            content={
+              <RangePicker
+                value={dateRange}
+                onChange={(dates) => setDateRange(dates)}
+                presets={[
+                  {
+                    label: '本周',
+                    value: [dayjs().startOf('week'), dayjs().endOf('week')],
+                  },
+                  {
+                    label: '本月',
+                    value: [dayjs().startOf('month'), dayjs().endOf('month')],
+                  },
+                  {
+                    label: '最近7天',
+                    value: [dayjs().subtract(7, 'day'), dayjs()],
+                  },
+                  {
+                    label: '最近30天',
+                    value: [dayjs().subtract(30, 'day'), dayjs()],
+                  },
+                ]}
+              />
+            }
+            title="选择日期范围"
+            trigger="click"
+          >
+            <Button
+              icon={<CalendarOutlined />}
+              style={{ borderRadius: 9999 }}
+            >
+              {dateRange && dateRange[0] && dateRange[1]
+                ? `${dateRange[0].format('M/D')} - ${dateRange[1].format('M/D')}`
+                : '日期范围'}
+            </Button>
+          </Popover>
+
+          {hasActiveFilters && (
+            <Button onClick={clearFilters} style={{ borderRadius: 9999 }}>
+              清除筛选
+            </Button>
+          )}
+        </div>
+      </div>
+
+      {/* List - No borders, tonal separation */}
+      <div style={{ flex: 1, overflow: 'auto', padding: '16px 32px 32px' }}>
+        {filteredHomework.length === 0 ? (
+          <div
+            style={{
+              textAlign: 'center',
+              padding: '80px 32px',
+              borderRadius: 24,
+              background: 'var(--color-surface-container)',
+            }}
+          >
+            <div style={{ fontSize: 48, marginBottom: 16 }}>📝</div>
+            <Text
+              style={{
+                display: 'block',
+                fontSize: 16,
+                fontWeight: 500,
+                color: 'var(--color-on-surface)',
+                marginBottom: 8,
+              }}
+            >
+              {hasActiveFilters ? '没有符合条件的作业' : '暂无作业'}
+            </Text>
+            <Text style={{ fontSize: 13, color: 'var(--color-on-surface-variant)' }}>
+              {hasActiveFilters ? '尝试调整筛选条件' : '点击"添加作业"开始'}
+            </Text>
+          </div>
         ) : (
           groupedHomework.map(({ date, items }) => (
             <div key={date} style={{ marginTop: 16 }}>
               <Text
-                strong
                 style={{
                   display: 'block',
-                  marginBottom: 8,
-                  color: dayjs(date).isBefore(dayjs(), 'day') ? '#ff4d4f' : undefined,
+                  marginBottom: 12,
+                  fontSize: 13,
+                  fontWeight: 500,
+                  color: dayjs(date).isBefore(dayjs(), 'day')
+                    ? 'var(--color-error)'
+                    : 'var(--color-on-surface-variant)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
                 }}
               >
                 {formatDateLabel(date)}
               </Text>
-              <List
-                dataSource={items}
-                renderItem={(item) => (
-                  <List.Item
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {items.map((item) => (
+                  <div
+                    key={item.id}
                     style={{
-                      borderBottom: '1px solid #f5f5f5',
+                      padding: 16,
+                      borderRadius: 16,
+                      background: 'var(--color-surface-container-lowest)',
+                      boxShadow: 'var(--shadow-sm)',
                       opacity: item.completedAt ? 0.6 : 1,
+                      transition: 'all 0.2s ease',
                     }}
-                    actions={[
-                      !item.completedAt && (
-                        <Button
-                          key="start"
-                          type="primary"
-                          size="small"
-                          onClick={() => handleStartTask(item)}
-                        >
-                          开始
-                        </Button>
-                      ),
-                      !item.completedAt && (
-                        <Button
-                          key="edit"
-                          type="text"
-                          size="small"
-                          icon={<EditOutlined />}
-                          onClick={() => handleEditTask(item)}
-                        />
-                      ),
-                      <Button
-                        key="delete"
-                        type="text"
-                        danger
-                        size="small"
-                        icon={<DeleteOutlined />}
-                        onClick={() => handleDelete(item)}
-                      />,
-                    ].filter(Boolean)}
+                    className="task-item"
                   >
-                    <List.Item.Meta
-                      avatar={
-                        item.completedAt ? (
-                          <CheckOutlined style={{ color: '#52c41a', marginTop: 4 }} />
-                        ) : (
-                          <div
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                      {/* Status Indicator */}
+                      {item.completedAt ? (
+                        <CheckOutlined
+                          style={{
+                            color: 'var(--color-success)',
+                            marginTop: 4,
+                          }}
+                        />
+                      ) : (
+                        <div
+                          style={{
+                            width: 8,
+                            height: 8,
+                            borderRadius: '50%',
+                            background: item.priority === 'high'
+                              ? 'var(--color-error)'
+                              : 'var(--color-outline-variant)',
+                            marginTop: 6,
+                            flexShrink: 0,
+                          }}
+                        />
+                      )}
+
+                      {/* Content */}
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                          <Text
+                            delete={!!item.completedAt}
                             style={{
-                              width: 6,
-                              height: 6,
-                              borderRadius: '50%',
-                              background:
-                                item.priority === 'high' ? '#ff4d4f' : '#d9d9d9',
-                              marginTop: 8,
+                              fontWeight: 500,
+                              color: item.completedAt
+                                ? 'var(--color-on-surface-variant)'
+                                : 'var(--color-on-surface)',
                             }}
-                          />
-                        )
-                      }
-                      title={
-                        <Space>
-                          <Text delete={!!item.completedAt}>{item.title}</Text>
+                          >
+                            {item.title}
+                          </Text>
                           <Tag
                             style={{
                               background: getSubjectColor(item.subjectId),
                               border: 'none',
-                              fontSize: 11,
+                              borderRadius: 9999,
+                              fontSize: 10,
+                              padding: '1px 8px',
                             }}
                           >
                             {getSubjectName(item.subjectId)}
                           </Tag>
                           {item.priority === 'high' && !item.completedAt && (
-                            <ThunderboltOutlined style={{ color: '#ff4d4f' }} />
+                            <ThunderboltOutlined style={{ color: 'var(--color-error)', fontSize: 12 }} />
                           )}
-                        </Space>
-                      }
-                      description={
-                        <Space separator={<Text type="secondary">·</Text>}>
-                          <span>
-                            <ClockCircleOutlined /> 预估 {item.estimatedMinutes}分钟
+                        </div>
+                        <Space
+                          separator={<Text type="secondary">·</Text>}
+                          style={{ fontSize: 12 }}
+                        >
+                          <span style={{ color: 'var(--color-on-surface-variant)' }}>
+                            <ClockCircleOutlined style={{ marginRight: 4 }} />
+                            预估 {item.estimatedMinutes}分钟
                           </span>
                           {item.completedAt && item.actualMinutes && (
-                            <span>实际 {item.actualMinutes}分钟</span>
+                            <span style={{ color: 'var(--color-on-surface-variant)' }}>
+                              实际 {item.actualMinutes}分钟
+                            </span>
                           )}
                         </Space>
-                      }
-                    />
-                  </List.Item>
-                )}
-              />
+                      </div>
+
+                      {/* Actions */}
+                      <div style={{ display: 'flex', gap: 4, flexShrink: 0 }}>
+                        {!item.completedAt && (
+                          <Button
+                            type="primary"
+                            size="small"
+                            onClick={() => handleStartTask(item)}
+                            style={{ borderRadius: 9999 }}
+                          >
+                            开始
+                          </Button>
+                        )}
+                        {!item.completedAt && (
+                          <Button
+                            type="text"
+                            size="small"
+                            icon={<EditOutlined />}
+                            onClick={() => handleEditTask(item)}
+                            style={{ borderRadius: 9999 }}
+                          />
+                        )}
+                        <Button
+                          type="text"
+                          danger
+                          size="small"
+                          icon={<DeleteOutlined />}
+                          onClick={() => handleDelete(item)}
+                          style={{ borderRadius: 9999 }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           ))
         )}

@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { Typography, Calendar, Badge, List, Tag, Space, Empty, Button, Modal } from 'antd';
+import { Typography, Calendar, Tag, Space, Button, Modal } from 'antd';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
-import { ClockCircleOutlined, ThunderboltOutlined, DeleteOutlined } from '@ant-design/icons';
+import { ClockCircleOutlined, ThunderboltOutlined, DeleteOutlined, CheckOutlined, PlusOutlined } from '@ant-design/icons';
 import { useHomeworkStore } from '../stores/homeworkStore';
 import { useSubjectStore } from '../stores/subjectStore';
 import { usePointsStore } from '../stores/pointsStore';
@@ -93,27 +93,47 @@ export const CalendarView: React.FC = () => {
     if (!data) return null;
 
     return (
-      <div style={{ padding: '2px 4px' }}>
+      <div style={{ padding: '2px 0', display: 'flex', flexDirection: 'column', gap: 2 }}>
         {data.pending > 0 && (
-          <Badge
-            status="error"
-            text={
-              <span style={{ fontSize: 11 }}>
-                {data.pending}待完成
-              </span>
-            }
-          />
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4,
+            }}
+          >
+            <div
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                background: 'var(--color-error)',
+              }}
+            />
+            <span style={{ fontSize: 11, color: 'var(--color-on-surface-variant)' }}>
+              {data.pending}待完成
+            </span>
+          </div>
         )}
         {data.completed > 0 && (
-          <div>
-            <Badge
-              status="success"
-              text={
-                <span style={{ fontSize: 11 }}>
-                  {data.completed}已完成
-                </span>
-              }
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4,
+            }}
+          >
+            <div
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                background: 'var(--color-success)',
+              }}
             />
+            <span style={{ fontSize: 11, color: 'var(--color-on-surface-variant)' }}>
+              {data.completed}已完成
+            </span>
           </div>
         )}
       </div>
@@ -130,26 +150,82 @@ export const CalendarView: React.FC = () => {
 
   if (loading) {
     return (
-      <div style={{ padding: 24, textAlign: 'center' }}>
+      <div style={{
+        padding: 48,
+        textAlign: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 16,
+      }}>
+        <div
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: '50%',
+            background: 'var(--color-primary-container)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <div
+            style={{
+              width: 20,
+              height: 20,
+              borderRadius: '50%',
+              border: '2px solid var(--color-primary)',
+              borderTopColor: 'transparent',
+              animation: 'spin 1s linear infinite',
+            }}
+          />
+        </div>
         <Text type="secondary">加载中...</Text>
       </div>
     );
   }
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      {/* Header */}
-      <div style={{ padding: '24px 24px 16px', borderBottom: '1px solid #f0f0f0' }}>
-        <Title level={4} style={{ margin: 0 }}>
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: 'var(--color-surface)' }}>
+      {/* Header - Editorial Style */}
+      <div
+        style={{
+          padding: '32px 32px 24px',
+          background: 'var(--color-surface-container-lowest)',
+          borderRadius: '0 0 24px 24px',
+          boxShadow: 'var(--shadow-sm)',
+        }}
+      >
+        <Title
+          level={2}
+          style={{
+            margin: 0,
+            marginBottom: 8,
+            fontWeight: 700,
+            color: 'var(--color-on-surface)',
+            letterSpacing: '-0.02em',
+          }}
+        >
           日历
         </Title>
-        <Text type="secondary">查看和管理作业日程</Text>
+        <Text style={{ color: 'var(--color-on-surface-variant)' }}>
+          查看和管理作业日程
+        </Text>
       </div>
 
-      {/* Calendar and Detail */}
-      <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
-        {/* Calendar */}
-        <div style={{ flex: 1, padding: 16, borderRight: '1px solid #f0f0f0', overflow: 'auto' }}>
+      {/* Calendar and Detail - Asymmetrical Layout */}
+      <div style={{ flex: 1, display: 'flex', overflow: 'hidden', padding: 24, gap: 24 }}>
+        {/* Calendar Card */}
+        <div
+          style={{
+            flex: 1,
+            borderRadius: 24,
+            background: 'var(--color-surface-container-lowest)',
+            boxShadow: 'var(--shadow-sm)',
+            padding: 24,
+            overflow: 'auto',
+          }}
+        >
           <Calendar
             fullscreen={false}
             value={selectedDate}
@@ -163,109 +239,171 @@ export const CalendarView: React.FC = () => {
           />
         </div>
 
-        {/* Selected Date Detail */}
-        <div style={{ width: 400, display: 'flex', flexDirection: 'column' }}>
+        {/* Selected Date Detail Card */}
+        <div
+          style={{
+            width: 380,
+            display: 'flex',
+            flexDirection: 'column',
+            borderRadius: 24,
+            background: 'var(--color-surface-container-lowest)',
+            boxShadow: 'var(--shadow-sm)',
+            overflow: 'hidden',
+          }}
+        >
+          {/* Detail Header */}
           <div
             style={{
-              padding: '16px 24px',
-              borderBottom: '1px solid #f0f0f0',
+              padding: '20px 24px',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
+              background: 'var(--color-surface-container-low)',
             }}
           >
-            <Title level={5} style={{ margin: 0 }}>
+            <Title
+              level={5}
+              style={{
+                margin: 0,
+                fontWeight: 600,
+                color: 'var(--color-on-surface)',
+              }}
+            >
               {formatDateLabel()}
             </Title>
-            <Button type="primary" size="small" onClick={() => setAddModalOpen(true)}>
+            <Button
+              type="primary"
+              size="small"
+              icon={<PlusOutlined />}
+              onClick={() => setAddModalOpen(true)}
+              style={{ borderRadius: 9999 }}
+            >
               添加
             </Button>
           </div>
 
-          <div style={{ flex: 1, overflow: 'auto', padding: '0 24px' }}>
+          {/* Detail Content */}
+          <div style={{ flex: 1, overflow: 'auto', padding: '16px 24px' }}>
             {selectedDateHomework.length === 0 ? (
-              <Empty
-                image={Empty.PRESENTED_IMAGE_SIMPLE}
-                description="当天没有作业"
-                style={{ marginTop: 60 }}
-              />
+              <div
+                style={{
+                  textAlign: 'center',
+                  padding: '60px 24px',
+                }}
+              >
+                <div style={{ fontSize: 40, marginBottom: 16 }}>📅</div>
+                <Text style={{ color: 'var(--color-on-surface-variant)' }}>
+                  当天没有作业
+                </Text>
+              </div>
             ) : (
-              <List
-                dataSource={selectedDateHomework}
-                renderItem={(item) => (
-                  <List.Item
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {selectedDateHomework.map((item) => (
+                  <div
+                    key={item.id}
                     style={{
-                      borderBottom: '1px solid #f5f5f5',
-                      opacity: item.completedAt ? 0.6 : 1,
+                      padding: 16,
+                      borderRadius: 16,
+                      background: item.completedAt
+                        ? 'var(--color-surface-container)'
+                        : 'var(--color-surface-container-low)',
+                      opacity: item.completedAt ? 0.7 : 1,
                     }}
-                    actions={[
-                      !item.completedAt && (
-                        <Button
-                          key="start"
-                          type="primary"
-                          size="small"
-                          onClick={() => handleStartTask(item)}
-                        >
-                          开始
-                        </Button>
-                      ),
-                      <Button
-                        key="delete"
-                        type="text"
-                        danger
-                        size="small"
-                        icon={<DeleteOutlined />}
-                        onClick={() => handleDelete(item)}
-                      />,
-                    ].filter(Boolean)}
                   >
-                    <List.Item.Meta
-                      avatar={
-                        item.completedAt ? (
-                          <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#52c41a', marginTop: 8 }} />
-                        ) : (
-                          <div
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                      {/* Status Indicator */}
+                      {item.completedAt ? (
+                        <CheckOutlined
+                          style={{
+                            color: 'var(--color-success)',
+                            marginTop: 4,
+                          }}
+                        />
+                      ) : (
+                        <div
+                          style={{
+                            width: 8,
+                            height: 8,
+                            borderRadius: '50%',
+                            background: item.priority === 'high'
+                              ? 'var(--color-error)'
+                              : 'var(--color-outline-variant)',
+                            marginTop: 6,
+                            flexShrink: 0,
+                          }}
+                        />
+                      )}
+
+                      {/* Content */}
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                          <Text
+                            delete={!!item.completedAt}
                             style={{
-                              width: 6,
-                              height: 6,
-                              borderRadius: '50%',
-                              background: item.priority === 'high' ? '#ff4d4f' : '#d9d9d9',
-                              marginTop: 8,
+                              fontWeight: 500,
+                              color: item.completedAt
+                                ? 'var(--color-on-surface-variant)'
+                                : 'var(--color-on-surface)',
                             }}
-                          />
-                        )
-                      }
-                      title={
-                        <Space>
-                          <Text delete={!!item.completedAt}>{item.title}</Text>
+                          >
+                            {item.title}
+                          </Text>
                           <Tag
                             style={{
                               background: getSubjectColor(item.subjectId),
                               border: 'none',
-                              fontSize: 11,
+                              borderRadius: 9999,
+                              fontSize: 10,
+                              padding: '1px 8px',
                             }}
                           >
                             {getSubjectName(item.subjectId)}
                           </Tag>
                           {item.priority === 'high' && !item.completedAt && (
-                            <ThunderboltOutlined style={{ color: '#ff4d4f' }} />
+                            <ThunderboltOutlined style={{ color: 'var(--color-error)', fontSize: 12 }} />
                           )}
-                        </Space>
-                      }
-                      description={
-                        <Space separator={<Text type="secondary">·</Text>}>
-                          <span>
-                            <ClockCircleOutlined /> 预估 {item.estimatedMinutes}分钟
+                        </div>
+                        <Space
+                          separator={<Text type="secondary">·</Text>}
+                          style={{ fontSize: 12 }}
+                        >
+                          <span style={{ color: 'var(--color-on-surface-variant)' }}>
+                            <ClockCircleOutlined style={{ marginRight: 4 }} />
+                            预估 {item.estimatedMinutes}分钟
                           </span>
                           {item.completedAt && item.actualMinutes && (
-                            <span>实际 {item.actualMinutes}分钟</span>
+                            <span style={{ color: 'var(--color-on-surface-variant)' }}>
+                              实际 {item.actualMinutes}分钟
+                            </span>
                           )}
                         </Space>
-                      }
-                    />
-                  </List.Item>
-                )}
-              />
+                      </div>
+
+                      {/* Actions */}
+                      <div style={{ display: 'flex', gap: 4, flexShrink: 0 }}>
+                        {!item.completedAt && (
+                          <Button
+                            type="primary"
+                            size="small"
+                            onClick={() => handleStartTask(item)}
+                            style={{ borderRadius: 9999 }}
+                          >
+                            开始
+                          </Button>
+                        )}
+                        <Button
+                          type="text"
+                          size="small"
+                          danger
+                          icon={<DeleteOutlined />}
+                          onClick={() => handleDelete(item)}
+                          style={{ borderRadius: 9999 }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
           </div>
         </div>

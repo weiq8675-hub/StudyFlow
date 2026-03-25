@@ -30,3 +30,5 @@ Available skills:
 - `/guard` - Guard mode
 - `/unfreeze` - Unfreeze state
 - `/gstack-upgrade` - Upgrade gstack
+
+If gstack skills aren't working, run `cd .claude/skills/gstack && ./setup` to build the binary and register skills.
