@@ -165,7 +165,7 @@ export const StatsView: React.FC = () => {
                 title="总积分"
                 value={totalPoints}
                 prefix={<TrophyOutlined style={{ color: '#faad14' }} />}
-                valueStyle={{ color: '#faad14' }}
+                styles={{ content: { color: '#faad14' } }}
               />
             </Card>
           </Col>
@@ -175,7 +175,7 @@ export const StatsView: React.FC = () => {
                 title="连续天数"
                 value={streak}
                 prefix={<FireOutlined style={{ color: '#ff4d4f' }} />}
-                valueStyle={{ color: '#ff4d4f' }}
+                styles={{ content: { color: '#ff4d4f' } }}
                 suffix="天"
               />
             </Card>
@@ -186,7 +186,7 @@ export const StatsView: React.FC = () => {
                 title="完成率"
                 value={stats.completionRate}
                 prefix={<CheckCircleOutlined style={{ color: '#52c41a' }} />}
-                valueStyle={{ color: '#52c41a' }}
+                styles={{ content: { color: '#52c41a' } }}
                 suffix="%"
               />
             </Card>
@@ -197,7 +197,7 @@ export const StatsView: React.FC = () => {
                 title="预估准确率"
                 value={stats.estimateAccuracy}
                 prefix={<BarChartOutlined style={{ color: '#1677ff' }} />}
-                valueStyle={{ color: '#1677ff' }}
+                styles={{ content: { color: '#1677ff' } }}
                 suffix="%"
               />
             </Card>
@@ -230,7 +230,7 @@ export const StatsView: React.FC = () => {
                 title="过期作业"
                 value={stats.overdue}
                 prefix={<ThunderboltOutlined style={{ color: '#ff4d4f' }} />}
-                valueStyle={{ color: stats.overdue > 0 ? '#ff4d4f' : undefined }}
+                styles={{ content: { color: stats.overdue > 0 ? '#ff4d4f' : undefined } }}
               />
             </Card>
           </Col>

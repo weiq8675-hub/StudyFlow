@@ -407,7 +407,7 @@ export const HomeworkListView: React.FC = () => {
                         </Space>
                       }
                       description={
-                        <Space split={<Text type="secondary">·</Text>}>
+                        <Space separator={<Text type="secondary">·</Text>}>
                           <span>
                             <ClockCircleOutlined /> 预估 {item.estimatedMinutes}分钟
                           </span>

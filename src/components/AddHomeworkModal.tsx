@@ -99,7 +99,7 @@ export const AddHomeworkModal: React.FC<AddHomeworkModalProps> = ({
           {editHomework ? '保存' : '添加'}
         </Button>,
       ]}
-      destroyOnClose
+      destroyOnHidden
     >
       <Form form={form} layout="vertical" style={{ marginTop: 16 }}>
         <Form.Item

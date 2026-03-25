@@ -60,7 +60,7 @@ export const CompleteHomeworkModal: React.FC<CompleteHomeworkModalProps> = ({
           确认完成
         </Button>,
       ]}
-      destroyOnClose
+      destroyOnHidden
     >
       <div style={{ marginTop: 16 }}>
         {/* Homework Summary */}

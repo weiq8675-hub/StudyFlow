@@ -252,7 +252,7 @@ export const TodayView: React.FC = () => {
                         </Space>
                       }
                       description={
-                        <Space split={<Text type="secondary">·</Text>}>
+                        <Space separator={<Text type="secondary">·</Text>}>
                           <span>
                             <ClockCircleOutlined /> {item.estimatedMinutes}分钟
                           </span>
@@ -288,7 +288,7 @@ export const TodayView: React.FC = () => {
                           <Text delete={true}>{item.title}</Text>
                         }
                         description={
-                          <Space split={<Text type="secondary">·</Text>}>
+                          <Space separator={<Text type="secondary">·</Text>}>
                             <span>预估 {item.estimatedMinutes}分钟</span>
                             <span>实际 {item.actualMinutes}分钟</span>
                           </Space>
