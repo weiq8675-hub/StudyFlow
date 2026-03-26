@@ -48,6 +48,7 @@ export const TodayView: React.FC = () => {
       ]);
     };
     init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleQuickAdd = () => {

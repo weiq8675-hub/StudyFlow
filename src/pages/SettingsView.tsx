@@ -48,6 +48,7 @@ export const SettingsView: React.FC = () => {
       await Promise.all([loadSubjects(), loadSettings(), loadHomework(), loadPointsData()]);
     };
     init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleAddSubject = () => {
@@ -105,7 +106,7 @@ export const SettingsView: React.FC = () => {
       await loadHomework();
       await loadPointsData();
       message.success('数据已清空');
-    } catch (error) {
+    } catch {
       message.error('清空失败');
     }
   };
@@ -129,7 +130,7 @@ export const SettingsView: React.FC = () => {
       URL.revokeObjectURL(url);
 
       message.success('数据已导出');
-    } catch (error) {
+    } catch {
       message.error('导出失败');
     }
   };
@@ -149,7 +150,7 @@ export const SettingsView: React.FC = () => {
         if (data.homework) {
           await db.homework.clear();
           await db.homework.bulkAdd(
-            data.homework.map((h: any) => ({
+            data.homework.map((h: { dueDate: string; completedAt?: string; createdAt: string; updatedAt: string }) => ({
               ...h,
               dueDate: new Date(h.dueDate),
               completedAt: h.completedAt ? new Date(h.completedAt) : undefined,
@@ -162,7 +163,7 @@ export const SettingsView: React.FC = () => {
         if (data.subjects) {
           await db.subjects.clear();
           await db.subjects.bulkAdd(
-            data.subjects.map((s: any) => ({
+            data.subjects.map((s: { createdAt: string }) => ({
               ...s,
               createdAt: new Date(s.createdAt),
             }))
@@ -172,7 +173,7 @@ export const SettingsView: React.FC = () => {
         if (data.pointsLog) {
           await db.pointsLog.clear();
           await db.pointsLog.bulkAdd(
-            data.pointsLog.map((p: any) => ({
+            data.pointsLog.map((p: { createdAt: string }) => ({
               ...p,
               createdAt: new Date(p.createdAt),
             }))
@@ -181,7 +182,7 @@ export const SettingsView: React.FC = () => {
 
         await Promise.all([loadHomework(), loadSubjects(), loadPointsData()]);
         message.success('数据已导入');
-      } catch (error) {
+      } catch {
         message.error('导入失败，请检查文件格式');
       }
     };

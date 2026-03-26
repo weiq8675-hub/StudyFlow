@@ -28,6 +28,7 @@ export const StatsView: React.FC = () => {
       await Promise.all([loadHomework(), loadSubjects(), loadPointsData()]);
     };
     init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Calculate statistics

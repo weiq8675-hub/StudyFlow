@@ -35,6 +35,7 @@ export const AddHomeworkModal: React.FC<AddHomeworkModalProps> = ({
 
   useEffect(() => {
     loadSubjects();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

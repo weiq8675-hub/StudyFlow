@@ -33,7 +33,7 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 // Mock ResizeObserver
-// @ts-ignore
+// @ts-expect-error ResizeObserver mock for testing
 globalThis.ResizeObserver = class ResizeObserver {
   observe() {}
   unobserve() {}

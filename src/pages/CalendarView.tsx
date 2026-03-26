@@ -29,6 +29,7 @@ export const CalendarView: React.FC = () => {
       await Promise.all([loadHomework(), loadSubjects(), loadPointsData()]);
     };
     init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Get homework counts by date for calendar badges

@@ -19,18 +19,21 @@ export const CompleteHomeworkModal: React.FC<CompleteHomeworkModalProps> = ({
   onClose,
   onComplete,
 }) => {
-  const [actualMinutes, setActualMinutes] = useState(30);
+  const [actualMinutes, setActualMinutes] = useState(homework?.estimatedMinutes ?? 30);
   const { subjects, loadSubjects } = useSubjectStore();
 
   useEffect(() => {
     loadSubjects();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (homework) {
-      setActualMinutes(homework.estimatedMinutes);
-    }
-  }, [homework]);
+  // Initialize actualMinutes when homework changes - use key prop on parent instead of effect
+
+  // Sync actualMinutes when homework changes
+  const currentEstimated = homework?.estimatedMinutes ?? 30;
+  if (actualMinutes !== currentEstimated && homework) {
+    setActualMinutes(currentEstimated);
+  }
 
   if (!homework) return null;
 

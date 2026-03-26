@@ -63,6 +63,7 @@ export const HomeworkListView: React.FC = () => {
       ]);
     };
     init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Filtered and sorted homework
