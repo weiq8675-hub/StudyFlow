@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Modal, Form, InputNumber, Button, Typography, Space, Tag, Divider } from 'antd';
 import { ClockCircleOutlined, TrophyOutlined } from '@ant-design/icons';
 import { useSubjectStore } from '../stores/subjectStore';
@@ -19,21 +19,22 @@ export const CompleteHomeworkModal: React.FC<CompleteHomeworkModalProps> = ({
   onClose,
   onComplete,
 }) => {
-  const [actualMinutes, setActualMinutes] = useState(homework?.estimatedMinutes ?? 30);
+  const [actualMinutes, setActualMinutes] = useState(30);
   const { subjects, loadSubjects } = useSubjectStore();
+  const prevHomeworkIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     loadSubjects();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Initialize actualMinutes when homework changes - use key prop on parent instead of effect
-
-  // Sync actualMinutes when homework changes
-  const currentEstimated = homework?.estimatedMinutes ?? 30;
-  if (actualMinutes !== currentEstimated && homework) {
-    setActualMinutes(currentEstimated);
-  }
+  // Sync actualMinutes when homework changes (not on every render)
+  useEffect(() => {
+    if (homework && homework.id !== prevHomeworkIdRef.current) {
+      setActualMinutes(homework.estimatedMinutes);
+      prevHomeworkIdRef.current = homework.id;
+    }
+  }, [homework]);
 
   if (!homework) return null;
 
