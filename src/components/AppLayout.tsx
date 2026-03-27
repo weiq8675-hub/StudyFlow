@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout, Menu, Typography } from 'antd';
 import {
   CalendarOutlined,
@@ -31,6 +31,14 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { totalPoints, streak } = usePointsStore();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -200,11 +208,70 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
           style={{
             background: 'var(--color-surface)',
             minHeight: '100vh',
+            paddingBottom: isMobile ? 64 : 0,
           }}
         >
           {children}
         </Content>
       </Layout>
+
+      {/* Mobile Bottom Navigation */}
+      {isMobile && (
+        <nav
+          style={{
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 56,
+            background: 'var(--color-surface-container-lowest)',
+            borderTop: 'none',
+            boxShadow: '0 -2px 8px rgba(16, 56, 60, 0.06)',
+            display: 'flex',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            zIndex: 100,
+            padding: '0 8px',
+            paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+          }}
+          role="navigation"
+          aria-label="Main navigation"
+        >
+          {menuItems.map((item) => {
+            const isActive = location.pathname === item.key;
+            return (
+              <button
+                key={item.key}
+                onClick={() => navigate(item.key)}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 2,
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '6px 12px',
+                  minWidth: 48,
+                  minHeight: 44,
+                  color: isActive
+                    ? 'var(--color-primary)'
+                    : 'var(--color-on-surface-variant)',
+                  transition: 'color var(--transition-fast)',
+                  WebkitTapHighlightColor: 'transparent',
+                }}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                <span style={{ fontSize: 20 }}>{item.icon}</span>
+                <span style={{ fontSize: 10, fontWeight: isActive ? 600 : 400 }}>
+                  {item.label}
+                </span>
+              </button>
+            );
+          })}
+        </nav>
+      )}
     </Layout>
   );
 };
