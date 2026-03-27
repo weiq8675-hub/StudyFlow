@@ -71,8 +71,8 @@ export const CompleteHomeworkModal: React.FC<CompleteHomeworkModalProps> = ({
         <div
           style={{
             padding: 16,
-            background: '#fafafa',
-            borderRadius: 8,
+            background: 'var(--color-surface-container)',
+            borderRadius: 'var(--radius-lg)',
             marginBottom: 16,
           }}
         >
@@ -132,8 +132,8 @@ export const CompleteHomeworkModal: React.FC<CompleteHomeworkModalProps> = ({
                   fontWeight: 500,
                   color:
                     actualMinutes <= homework.estimatedMinutes
-                      ? '#52c41a'
-                      : '#ff4d4f',
+                      ? 'var(--color-success)'
+                      : 'var(--color-error)',
                 }}
               >
                 {actualMinutes}分钟
@@ -149,8 +149,8 @@ export const CompleteHomeworkModal: React.FC<CompleteHomeworkModalProps> = ({
                   fontWeight: 500,
                   color:
                     Math.abs(actualMinutes - homework.estimatedMinutes) < 10
-                      ? '#52c41a'
-                      : '#faad14',
+                      ? 'var(--color-success)'
+                      : 'var(--color-warning)',
                 }}
               >
                 {actualMinutes > homework.estimatedMinutes ? '+' : ''}
@@ -165,14 +165,14 @@ export const CompleteHomeworkModal: React.FC<CompleteHomeworkModalProps> = ({
           style={{
             marginTop: 16,
             padding: 12,
-            background: '#e6f7ff',
-            borderRadius: 8,
+            background: 'var(--color-secondary-container)',
+            borderRadius: 'var(--radius-lg)',
             textAlign: 'center',
           }}
         >
-          <TrophyOutlined style={{ color: '#1677ff', marginRight: 8 }} />
+          <TrophyOutlined style={{ color: 'var(--color-secondary)', marginRight: 8 }} />
           <Text>预计获得 </Text>
-          <Text strong style={{ color: '#1677ff' }}>
+          <Text strong style={{ color: 'var(--color-secondary)' }}>
             +{getPointsEstimate()} 积分
           </Text>
         </div>
