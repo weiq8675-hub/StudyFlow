@@ -190,16 +190,34 @@ export const SettingsView: React.FC = () => {
   };
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
-      {/* Header */}
-      <div style={{ padding: '24px 24px 16px', borderBottom: '1px solid #f0f0f0' }}>
-        <Title level={4} style={{ margin: 0 }}>
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: 'var(--color-surface)', overflow: 'auto' }}>
+      {/* Header - Editorial Style (consistent with other pages) */}
+      <div
+        style={{
+          padding: '32px 32px 24px',
+          background: 'var(--color-surface-container-lowest)',
+          borderRadius: '0 0 24px 24px',
+          boxShadow: 'var(--shadow-sm)',
+        }}
+      >
+        <Title
+          level={2}
+          style={{
+            margin: 0,
+            marginBottom: 8,
+            fontWeight: 700,
+            color: 'var(--color-on-surface)',
+            letterSpacing: '-0.02em',
+          }}
+        >
           设置
         </Title>
-        <Text type="secondary">管理科目和应用设置</Text>
+        <Text style={{ color: 'var(--color-on-surface-variant)' }}>
+          管理科目和应用设置
+        </Text>
       </div>
 
-      <div style={{ flex: 1, padding: 24, overflow: 'auto', maxWidth: 800 }}>
+      <div style={{ flex: 1, padding: '24px 32px', overflow: 'auto', maxWidth: 800 }}>
         {/* Subject Management */}
         <Card
           title="科目管理"
@@ -238,7 +256,7 @@ export const SettingsView: React.FC = () => {
                         height: 24,
                         borderRadius: 4,
                         background: item.color,
-                        border: '1px solid #d9d9d9',
+                        border: 'none',
                       }}
                     />
                   }
