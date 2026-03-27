@@ -128,9 +128,9 @@ const App: React.FC = () => {
             borderRadiusSM: 9999,
             paddingInline: 20,
             paddingInlineLG: 28,
-            controlHeight: 36,
-            controlHeightLG: 44,
-            controlHeightSM: 28,
+            controlHeight: 40,
+            controlHeightLG: 48,
+            controlHeightSM: 32,
           },
           // Input - Surface-container-lowest with ghost focus
           Input: {
