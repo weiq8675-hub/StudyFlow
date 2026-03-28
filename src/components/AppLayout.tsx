@@ -55,6 +55,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
       >
         {/* Logo / Brand */}
         <div
+          role="banner"
           style={{
             padding: '28px 20px',
             borderBottom: 'none',
@@ -163,6 +164,8 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
 
         {/* Navigation Menu */}
         <Menu
+          role="navigation"
+          aria-label="Sidebar navigation"
           mode="inline"
           theme="dark"
           selectedKeys={[location.pathname]}
@@ -205,6 +208,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
       {/* Main Content Area */}
       <Layout>
         <Content
+          role="main"
           style={{
             background: 'var(--color-surface)',
             minHeight: '100vh',

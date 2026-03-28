@@ -216,30 +216,29 @@ export const StatsView: React.FC = () => {
             gap: 32,
           }}
         >
-          <div style={{ flex: 1 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
-              <TrophyOutlined style={{ fontSize: 32, color: 'rgba(255,255,255,0.9)' }} />
-              <div>
-                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.8)', marginBottom: 4 }}>
-                  总积分
-                </div>
-                <div style={{ fontSize: 36, fontWeight: 700, color: 'white', letterSpacing: '-0.02em' }}>
-                  {totalPoints}
-                </div>
+          {/* Trophy / Points */}
+          <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 12 }}>
+            <TrophyOutlined style={{ fontSize: 32, color: 'rgba(255,255,255,0.9)' }} />
+            <div>
+              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.8)', marginBottom: 4 }}>
+                总积分
+              </div>
+              <div style={{ fontSize: 36, fontWeight: 700, color: 'white', letterSpacing: '-0.02em' }}>
+                {totalPoints}
               </div>
             </div>
-            <div style={{ width: 1, height: 48, background: 'rgba(255,255,255,0.2)' }} />
-            <div style={{ flex: 1 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
-                <FireOutlined style={{ fontSize: 32, color: '#ff9f43' }} />
-                <div>
-                  <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.8)', marginBottom: 4 }}>
-                    连续天数
-                  </div>
-                  <div style={{ fontSize: 36, fontWeight: 700, color: '#ff9f43', letterSpacing: '-0.02em' }}>
-                    {streak}
-                  </div>
-                </div>
+          </div>
+          {/* Vertical Divider */}
+          <div style={{ width: 1, height: 48, background: 'rgba(255,255,255,0.2)' }} />
+          {/* Streak / Fire */}
+          <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 12 }}>
+            <FireOutlined style={{ fontSize: 32, color: '#ff9f43' }} />
+            <div>
+              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.8)', marginBottom: 4 }}>
+                连续天数
+              </div>
+              <div style={{ fontSize: 36, fontWeight: 700, color: '#ff9f43', letterSpacing: '-0.02em' }}>
+                {streak}
               </div>
             </div>
           </div>
