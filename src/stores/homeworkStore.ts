@@ -17,6 +17,7 @@ interface HomeworkState {
     priority: Priority;
     estimatedMinutes: number;
     dueDate: Date;
+    scheduledHour?: number;
   }) => Promise<Homework>;
   updateHomework: (id: string, data: Partial<Homework>) => Promise<void>;
   completeHomework: (id: string, actualMinutes: number) => Promise<void>;

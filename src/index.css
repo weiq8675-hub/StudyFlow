@@ -586,3 +586,74 @@ body {
 .subject-历史 { --subject-color: #fffbe6; --subject-text: #ad8b00; }
 .subject-地理 { --subject-color: #fcffe6; --subject-text: #5b8c00; }
 .subject-政治 { --subject-color: #f0f5ff; --subject-text: #1d39c4; }
+
+/* ========================================
+ * Time Slot Schedule View
+ * ======================================== */
+
+.time-slot-row {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--color-outline-variant);
+}
+
+.time-slot-row:hover {
+  background: var(--color-surface-container-low);
+}
+
+.time-slot-task {
+  border-radius: 12px;
+  padding: 6px 12px;
+  width: 100%;
+  cursor: pointer;
+  transition: box-shadow var(--transition-fast);
+}
+
+.time-slot-task:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.time-slot-task--green { border-left: 3px solid var(--color-success); }
+.time-slot-task--red { border-left: 3px solid var(--color-error); }
+.time-slot-task--pending { border-left: 3px solid var(--color-outline-variant); }
+.time-slot-task--overdue { border-left: 3px solid var(--color-warning); }
+
+.time-slot-empty {
+  border: 1px dashed var(--color-outline-variant);
+  background: var(--color-surface-container);
+  border-radius: 12px;
+  height: 36px;
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.time-slot-empty:hover {
+  background: var(--color-surface-container-high);
+  border-color: var(--color-primary);
+}
+
+.time-slot-ghosted {
+  background: var(--color-surface-container);
+  opacity: 0.4;
+  pointer-events: none;
+  border-radius: 4px;
+  height: 36px;
+}
+
+.time-slot-continuation {
+  background: var(--color-surface-container-low);
+  opacity: 0.7;
+  border-radius: 4px;
+  height: 36px;
+}
+
+@keyframes slotPulse {
+  0% { box-shadow: 0 0 0 0 rgba(19, 107, 92, 0.4); }
+  70% { box-shadow: 0 0 0 8px rgba(19, 107, 92, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(19, 107, 92, 0); }
+}
+
+.time-slot-pulse {
+  animation: slotPulse 0.8s ease-out;
+}

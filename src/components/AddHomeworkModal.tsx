@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Form, Input, Select, InputNumber, DatePicker, Button, message } from 'antd';
 import { useHomeworkStore } from '../stores/homeworkStore';
 import { useSubjectStore } from '../stores/subjectStore';
-import type { Priority, HomeworkFormData } from '../types';
+import type { Priority } from '../types';
+import { isWorkday } from '../lib/slotAssignment';
 import dayjs from 'dayjs';
 
 interface AddHomeworkModalProps {
@@ -10,6 +11,7 @@ interface AddHomeworkModalProps {
   onClose: () => void;
   initialTitle?: string;
   initialDueDate?: Date;
+  initialHour?: number;
   editHomework?: {
     id: string;
     title: string;
@@ -17,6 +19,7 @@ interface AddHomeworkModalProps {
     priority: Priority;
     estimatedMinutes: number;
     dueDate: Date;
+    scheduledHour?: number;
   };
 }
 
@@ -25,12 +28,14 @@ export const AddHomeworkModal: React.FC<AddHomeworkModalProps> = ({
   onClose,
   initialTitle = '',
   initialDueDate,
+  initialHour,
   editHomework,
 }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const [hourResetNote, setHourResetNote] = useState<string | null>(null);
 
-  const { addHomework, updateHomework } = useHomeworkStore();
+  const { addHomework, updateHomework, homework } = useHomeworkStore();
   const { subjects, loadSubjects } = useSubjectStore();
 
   useEffect(() => {
@@ -47,6 +52,7 @@ export const AddHomeworkModal: React.FC<AddHomeworkModalProps> = ({
           priority: editHomework.priority,
           estimatedMinutes: editHomework.estimatedMinutes,
           dueDate: dayjs(editHomework.dueDate),
+          scheduledHour: editHomework.scheduledHour,
         });
       } else {
         form.setFieldsValue({
@@ -55,19 +61,87 @@ export const AddHomeworkModal: React.FC<AddHomeworkModalProps> = ({
           priority: 'medium',
           estimatedMinutes: 30,
           dueDate: initialDueDate ? dayjs(initialDueDate) : dayjs(),
+          scheduledHour: initialHour,
         });
       }
+      setHourResetNote(null);
     }
-  }, [open, initialTitle, initialDueDate, editHomework, form]);
+  }, [open, initialTitle, initialDueDate, initialHour, editHomework, form]);
+
+  const dueDateValue = Form.useWatch('dueDate', form);
+
+  const hourOptions = (() => {
+    const date = dueDateValue || dayjs();
+    const workday = isWorkday(date);
+    const startHour = workday ? 19 : 8;
+    const endHour = 23;
+
+    const options: { value: number; label: string; disabled?: boolean }[] = [];
+    for (let h = startHour; h <= endHour; h++) {
+      options.push({ value: h, label: `${h}:00` });
+    }
+
+    // Conflict prevention: find occupied hours for this date
+    if (dueDateValue) {
+      const dateStr = dueDateValue.format('YYYY-MM-DD');
+      const occupiedHours = new Map<number, string>();
+      for (const hw of homework) {
+        if (
+          hw.scheduledHour !== undefined &&
+          dayjs(hw.dueDate).format('YYYY-MM-DD') === dateStr &&
+          hw.id !== editHomework?.id
+        ) {
+          occupiedHours.set(hw.scheduledHour, hw.title);
+        }
+      }
+      for (const opt of options) {
+        const occupant = occupiedHours.get(opt.value);
+        if (occupant) {
+          opt.disabled = true;
+          opt.label = `${opt.value}:00 (已被「${occupant}」占用)`;
+        }
+      }
+    }
+
+    return options;
+  })();
+
+  const handleDueDateChange = () => {
+    const currentHour = form.getFieldValue('scheduledHour');
+    if (currentHour === undefined || currentHour === null) return;
+
+    const date = form.getFieldValue('dueDate');
+    if (!date) return;
+
+    const workday = isWorkday(date);
+    const startHour = workday ? 19 : 8;
+
+    // Smart reset: only reset if the current hour is not available on the new date
+    if (currentHour < startHour || currentHour > 23) {
+      const newHour = startHour;
+      form.setFieldsValue({ scheduledHour: newHour });
+      if (workday) {
+        setHourResetNote(`工作日无${currentHour}:00时段，已调整为${newHour}:00`);
+      } else {
+        setHourResetNote(`已调整为${newHour}:00`);
+      }
+    } else {
+      setHourResetNote(null);
+    }
+  };
 
   const handleSubmit = async () => {
     try {
       const values = await form.validateFields();
       setLoading(true);
 
-      const formData: HomeworkFormData = {
-        ...values,
+      const formData = {
+        title: values.title,
+        subjectId: values.subjectId,
+        priority: values.priority,
+        estimatedMinutes: values.estimatedMinutes,
         dueDate: values.dueDate.toDate(),
+        scheduledHour: values.scheduledHour,
       };
 
       if (editHomework) {
@@ -79,6 +153,7 @@ export const AddHomeworkModal: React.FC<AddHomeworkModalProps> = ({
       }
 
       form.resetFields();
+      setHourResetNote(null);
       onClose();
     } catch (error) {
       console.error('Form validation failed:', error);
@@ -163,8 +238,28 @@ export const AddHomeworkModal: React.FC<AddHomeworkModalProps> = ({
             style={{ width: '100%' }}
             format="YYYY-MM-DD"
             placeholder="选择日期"
+            onChange={handleDueDateChange}
           />
         </Form.Item>
+
+        <Form.Item name="scheduledHour" label="计划开始时间">
+          <Select
+            placeholder="选择时间（可选）"
+            allowClear
+            options={hourOptions}
+          />
+        </Form.Item>
+
+        {hourResetNote && (
+          <div style={{
+            fontSize: 12,
+            color: 'var(--color-warning)',
+            marginTop: -8,
+            marginBottom: 16,
+          }}>
+            {hourResetNote}
+          </div>
+        )}
       </Form>
     </Modal>
   );

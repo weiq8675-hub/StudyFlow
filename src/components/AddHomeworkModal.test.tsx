@@ -16,6 +16,7 @@ vi.mock('../stores/homeworkStore', () => ({
   useHomeworkStore: () => ({
     addHomework: mockAddHomework,
     updateHomework: mockUpdateHomework,
+    homework: [],
   }),
 }));
 

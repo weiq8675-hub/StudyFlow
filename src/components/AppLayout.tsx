@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Layout, Menu, Typography } from 'antd';
 import {
   CalendarOutlined,
@@ -11,6 +11,7 @@ import {
 } from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { usePointsStore } from '../stores/pointsStore';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 const { Sider, Content } = Layout;
 const { Text } = Typography;
@@ -21,7 +22,7 @@ interface AppLayoutProps {
 
 const menuItems = [
   { key: '/today', icon: <SunOutlined />, label: '今日' },
-  { key: '/calendar', icon: <CalendarOutlined />, label: '日历' },
+  { key: '/calendar', icon: <CalendarOutlined />, label: '日程' },
   { key: '/homework', icon: <BookOutlined />, label: '作业库' },
   { key: '/stats', icon: <BarChartOutlined />, label: '统计' },
   { key: '/points', icon: <TrophyOutlined />, label: '积分' },
@@ -32,14 +33,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { totalPoints, streak } = usePointsStore();
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, []);
+  const isMobile = useIsMobile();
 
   return (
     <Layout style={{ minHeight: '100vh' }}>

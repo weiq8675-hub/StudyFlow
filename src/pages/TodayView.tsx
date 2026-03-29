@@ -28,7 +28,15 @@ export const TodayView: React.FC = () => {
   const { totalPoints, streak, loadPointsData, awardPoints } = usePointsStore();
 
   const todayHomework = getTodayHomework();
-  const pendingHomework = todayHomework.filter((h) => !h.completedAt);
+  const pendingHomework = todayHomework
+    .filter((h) => !h.completedAt)
+    .sort((a, b) => {
+      // Scheduled tasks first (by hour), then unscheduled
+      if (a.scheduledHour !== undefined && b.scheduledHour === undefined) return -1;
+      if (a.scheduledHour === undefined && b.scheduledHour !== undefined) return 1;
+      if (a.scheduledHour !== undefined && b.scheduledHour !== undefined) return a.scheduledHour - b.scheduledHour;
+      return 0;
+    });
   const completedHomework = todayHomework.filter((h) => h.completedAt);
 
   // Calculate stats
@@ -417,6 +425,25 @@ export const TodayView: React.FC = () => {
                           )}
                         </div>
                         <Space separator={<Text type="secondary">·</Text>}>
+                          {item.scheduledHour !== undefined && (
+                            <span style={{ color: 'var(--color-primary)', fontSize: 13, fontWeight: 500 }}>
+                              {item.scheduledHour}:00
+                            </span>
+                          )}
+                          {item.scheduledHour === undefined && (
+                            <Tag
+                              style={{
+                                background: 'var(--color-warning-container)',
+                                color: 'var(--color-warning)',
+                                border: 'none',
+                                borderRadius: 9999,
+                                fontSize: 10,
+                                padding: '1px 8px',
+                              }}
+                            >
+                              未安排时间
+                            </Tag>
+                          )}
                           <span style={{ color: 'var(--color-on-surface-variant)', fontSize: 13 }}>
                             <ClockCircleOutlined style={{ marginRight: 4 }} />
                             {item.estimatedMinutes}分钟

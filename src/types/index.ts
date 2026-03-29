@@ -10,6 +10,7 @@ export interface Homework {
   estimatedMinutes: number;
   actualMinutes?: number;
   dueDate: Date;
+  scheduledHour?: number; // 8-23, the hour at which this task is planned to start
   completedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
@@ -51,6 +52,7 @@ export interface HomeworkFormData {
   priority: Priority;
   estimatedMinutes: number;
   dueDate: Date;
+  scheduledHour?: number;
 }
 
 export type FilterStatus = 'all' | 'pending' | 'completed' | 'overdue';

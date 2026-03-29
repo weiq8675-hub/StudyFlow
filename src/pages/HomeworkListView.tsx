@@ -40,6 +40,7 @@ export const HomeworkListView: React.FC = () => {
   // Filters
   const [statusFilter, setStatusFilter] = useState<FilterStatus>('all');
   const [subjectFilter, setSubjectFilter] = useState<string>('all');
+  const [scheduledFilter, setScheduledFilter] = useState<'all' | 'scheduled' | 'unscheduled'>('all');
   const [sortBy, setSortBy] = useState<SortBy>('dueDate');
   const [dateRange, setDateRange] = useState<[dayjs.Dayjs | null, dayjs.Dayjs | null] | null>(null);
 
@@ -85,6 +86,13 @@ export const HomeworkListView: React.FC = () => {
       result = result.filter((h) => h.subjectId === subjectFilter);
     }
 
+    // Scheduled filter
+    if (scheduledFilter === 'scheduled') {
+      result = result.filter((h) => h.scheduledHour !== undefined);
+    } else if (scheduledFilter === 'unscheduled') {
+      result = result.filter((h) => h.scheduledHour === undefined);
+    }
+
     // Date range filter
     if (dateRange && dateRange[0] && dateRange[1]) {
       const start = dateRange[0].startOf('day').toDate();
@@ -112,7 +120,7 @@ export const HomeworkListView: React.FC = () => {
     });
 
     return result;
-  }, [homework, statusFilter, subjectFilter, sortBy, dateRange, subjects]);
+  }, [homework, statusFilter, subjectFilter, scheduledFilter, sortBy, dateRange, subjects]);
 
   // Group by date
   const groupedHomework = useMemo(() => {
@@ -192,11 +200,12 @@ export const HomeworkListView: React.FC = () => {
   const clearFilters = () => {
     setStatusFilter('all');
     setSubjectFilter('all');
+    setScheduledFilter('all');
     setDateRange(null);
     setSortBy('dueDate');
   };
 
-  const hasActiveFilters = statusFilter !== 'all' || subjectFilter !== 'all' || dateRange;
+  const hasActiveFilters = statusFilter !== 'all' || subjectFilter !== 'all' || scheduledFilter !== 'all' || dateRange;
 
   if (loading) {
     return (
@@ -310,6 +319,17 @@ export const HomeworkListView: React.FC = () => {
             options={[
               { value: 'all', label: '全部科目' },
               ...subjects.map((s) => ({ value: s.id, label: s.name })),
+            ]}
+          />
+
+          <Select
+            value={scheduledFilter}
+            onChange={setScheduledFilter}
+            style={{ width: 130 }}
+            options={[
+              { value: 'all', label: '全部安排' },
+              { value: 'scheduled', label: '已安排' },
+              { value: 'unscheduled', label: '未安排' },
             ]}
           />
 
@@ -491,6 +511,11 @@ export const HomeworkListView: React.FC = () => {
                             <ClockCircleOutlined style={{ marginRight: 4 }} />
                             预估 {item.estimatedMinutes}分钟
                           </span>
+                          {item.scheduledHour !== undefined && (
+                            <span style={{ color: 'var(--color-primary)', fontWeight: 500 }}>
+                              计划 {item.scheduledHour}:00
+                            </span>
+                          )}
                           {item.completedAt && item.actualMinutes && (
                             <span style={{ color: 'var(--color-on-surface-variant)' }}>
                               实际 {item.actualMinutes}分钟
