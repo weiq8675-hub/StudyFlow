@@ -22,8 +22,8 @@ function calculateBasePoints(estimatedMinutes: number, priority: Priority): numb
   return estimatedMinutes * multiplier;
 }
 
-function calculateOnTimeBonus(dueDate: Date, completedAt: Date): number {
-  return completedAt <= dueDate ? 10 : 0;
+function calculateOnTimeBonus(dueDate: Date): number {
+  return new Date() <= dueDate ? 10 : 0;
 }
 
 function calculateAccuracyBonus(estimated: number, actual: number): number {
@@ -70,14 +70,14 @@ export const usePointsStore = create<PointsState>((set, get) => ({
       totalPoints,
       streak,
       lastActiveDate: logs[0]?.createdAt.toISOString().split('T')[0] || null,
-      pointsLog: logs.slice(0, 50), // Keep last 50 logs
+      pointsLog: logs,
     });
   },
 
   awardPoints: async (homework, actualMinutes) => {
     const basePoints = calculateBasePoints(homework.estimatedMinutes, homework.priority);
-    const onTimeBonus = homework.completedAt && homework.dueDate
-      ? calculateOnTimeBonus(new Date(homework.dueDate), new Date(homework.completedAt))
+    const onTimeBonus = homework.dueDate
+      ? calculateOnTimeBonus(new Date(homework.dueDate))
       : 0;
     const accuracyBonus = calculateAccuracyBonus(homework.estimatedMinutes, actualMinutes);
 
@@ -122,7 +122,7 @@ export const usePointsStore = create<PointsState>((set, get) => ({
 
     set((state) => ({
       totalPoints: state.totalPoints + points,
-      pointsLog: [log, ...state.pointsLog].slice(0, 50),
+      pointsLog: [log, ...state.pointsLog],
     }));
   },
 

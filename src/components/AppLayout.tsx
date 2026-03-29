@@ -24,6 +24,7 @@ const menuItems = [
   { key: '/calendar', icon: <CalendarOutlined />, label: '日历' },
   { key: '/homework', icon: <BookOutlined />, label: '作业库' },
   { key: '/stats', icon: <BarChartOutlined />, label: '统计' },
+  { key: '/points', icon: <TrophyOutlined />, label: '积分' },
   { key: '/settings', icon: <SettingOutlined />, label: '设置' },
 ];
 

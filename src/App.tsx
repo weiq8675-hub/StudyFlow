@@ -10,6 +10,7 @@ import { TodayView } from './pages/TodayView';
 import { HomeworkListView } from './pages/HomeworkListView';
 import { CalendarView } from './pages/CalendarView';
 import { StatsView } from './pages/StatsView';
+import { PointsView } from './pages/PointsView';
 import { SettingsView } from './pages/SettingsView';
 
 // Configure dayjs for Chinese
@@ -284,6 +285,7 @@ const App: React.FC = () => {
               <Route path="/calendar" element={<CalendarView />} />
               <Route path="/homework" element={<HomeworkListView />} />
               <Route path="/stats" element={<StatsView />} />
+              <Route path="/points" element={<PointsView />} />
               <Route path="/settings" element={<SettingsView />} />
             </Routes>
           </AppLayout>

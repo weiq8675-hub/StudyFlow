@@ -447,7 +447,7 @@ export const StatsView: React.FC = () => {
           </div>
         </div>
 
-        {/* Recent Points Log */}
+        {/* Points Detail Link */}
         <div
           style={{
             padding: 24,
@@ -456,21 +456,21 @@ export const StatsView: React.FC = () => {
             boxShadow: 'var(--shadow-sm)',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
             <TrophyOutlined style={{ color: 'var(--color-primary)', fontSize: 18 }} />
             <Title level={5} style={{ margin: 0, fontWeight: 600, color: 'var(--color-on-surface)' }}>
-              最近积分记录
+              积分记录
             </Title>
           </div>
 
           {pointsLog.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '40px 0' }}>
+            <div style={{ textAlign: 'center', padding: '20px 0' }}>
               <Text style={{ color: 'var(--color-on-surface-variant)' }}>
                 暂无记录
               </Text>
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
               {pointsLog.slice(0, 5).map((log) => (
                 <div
                   key={log.id}
@@ -478,16 +478,16 @@ export const StatsView: React.FC = () => {
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    padding: '12px 16px',
+                    padding: '10px 14px',
                     borderRadius: 12,
                     background: 'var(--color-surface-container-low)',
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                     <div
                       style={{
-                        width: 32,
-                        height: 32,
+                        width: 28,
+                        height: 28,
                         borderRadius: '50%',
                         background: 'var(--color-primary-container)',
                         display: 'flex',
@@ -495,7 +495,7 @@ export const StatsView: React.FC = () => {
                         justifyContent: 'center',
                       }}
                     >
-                      <TrophyOutlined style={{ color: 'var(--color-primary)', fontSize: 14 }} />
+                      <TrophyOutlined style={{ color: 'var(--color-primary)', fontSize: 12 }} />
                     </div>
                     <div>
                       <div style={{ fontWeight: 500, color: 'var(--color-on-surface)', fontSize: 13 }}>
@@ -509,16 +509,34 @@ export const StatsView: React.FC = () => {
                   <div
                     style={{
                       fontWeight: 600,
-                      color: 'var(--color-primary)',
-                      fontSize: 16,
+                      color: log.points >= 0 ? 'var(--color-success)' : 'var(--color-error)',
+                      fontSize: 15,
                     }}
                   >
-                    +{log.points}
+                    {log.points >= 0 ? `+${log.points}` : log.points}
                   </div>
                 </div>
               ))}
             </div>
           )}
+
+          <button
+            onClick={() => window.location.href = '/points'}
+            style={{
+              width: '100%',
+              background: 'var(--color-surface-container-low)',
+              border: 'none',
+              borderRadius: 12,
+              padding: '12px 16px',
+              color: 'var(--color-primary)',
+              fontWeight: 500,
+              fontSize: 14,
+              cursor: 'pointer',
+              transition: 'background var(--transition-fast)',
+            }}
+          >
+            查看完整积分明细 →
+          </button>
         </div>
       </div>
     </div>
