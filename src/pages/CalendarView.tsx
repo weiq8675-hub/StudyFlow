@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
-import { Typography, Button, Tag, Popover, message } from 'antd';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
+import { Typography, Button, Tag, message } from 'antd';
 import {
   LeftOutlined,
   RightOutlined,
@@ -15,6 +15,7 @@ import { useHomeworkStore } from '../stores/homeworkStore';
 import { useSubjectStore } from '../stores/subjectStore';
 import { usePointsStore } from '../stores/pointsStore';
 import { AddHomeworkModal } from '../components/AddHomeworkModal';
+import type { AddHomeworkModalProps } from '../components/AddHomeworkModal';
 import { CompleteHomeworkModal } from '../components/CompleteHomeworkModal';
 import { initializeDatabase } from '../lib/db';
 import {
@@ -363,7 +364,6 @@ export const CalendarView: React.FC = () => {
                   {hwAtHour ? (
                     <TaskCell
                       hw={hwAtHour}
-                      subjectName={getSubjectName(hwAtHour.subjectId)}
                       subjectColor={getSubjectColor(hwAtHour.subjectId)}
                       statusColor={statusBorderColor(getTaskStatusColor(hwAtHour))}
                       onClick={() => handleTaskClick(hwAtHour)}
@@ -649,16 +649,15 @@ export const CalendarView: React.FC = () => {
 
 interface TaskCellProps {
   hw: Homework;
-  subjectName: string;
   subjectColor: string;
   statusColor: string;
   onClick: () => void;
 }
 
-const TaskCell: React.FC<TaskCellProps> = ({ hw, subjectName, subjectColor, statusColor, onClick }) => (
+const TaskCell: React.FC<TaskCellProps> = ({ hw, subjectColor, statusColor, onClick }) => (
   <div
     className={`time-slot-task time-slot-task--${hw.completedAt ? 'green' : 'pending'}`}
-    style={{ background: `${subjectColor}20`, cursor: 'pointer' }}
+    style={{ background: `${subjectColor}20`, borderLeft: `3px solid ${statusColor}`, cursor: 'pointer' }}
     onClick={onClick}
   >
     <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>

@@ -6,7 +6,7 @@ import type { Priority } from '../types';
 import { isWorkday } from '../lib/slotAssignment';
 import dayjs from 'dayjs';
 
-interface AddHomeworkModalProps {
+export interface AddHomeworkModalProps {
   open: boolean;
   onClose: () => void;
   initialTitle?: string;
