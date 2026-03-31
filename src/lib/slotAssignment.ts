@@ -1,4 +1,5 @@
 import type { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import type { Homework } from '../types';
 
 // TODO: Make these user-configurable in settings
@@ -78,7 +79,7 @@ export function buildWeekSchedule(weekStart: Dayjs, homework: Homework[]): WeekS
   const unscheduled: Homework[] = [];
 
   for (const h of homework) {
-    const dueDateStr = new Date(h.dueDate).toISOString().slice(0, 10);
+    const dueDateStr = dayjs(h.dueDate).format('YYYY-MM-DD');
     const dayIndex = days.findIndex((d) => d.date === dueDateStr);
     if (dayIndex === -1) {
       // Not in this week — skip
@@ -119,7 +120,7 @@ export function buildWeekSchedule(weekStart: Dayjs, homework: Homework[]): WeekS
 
 export function daySummary(day: DaySchedule, homework: Homework[]) {
   const dayHomework = homework.filter((h) => {
-    const dueDateStr = new Date(h.dueDate).toISOString().slice(0, 10);
+    const dueDateStr = dayjs(h.dueDate).format('YYYY-MM-DD');
     return dueDateStr === day.date;
   });
 
